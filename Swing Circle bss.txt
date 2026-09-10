@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MONITORING CLEARANCE SWING CIRCLE</title>
-    <!-- Font Google: Inter / Roboto -->
+    <!-- Font Google -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- PapaParse untuk membaca data CSV dari Google Sheets -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.min.js"></script>
     <style>
         :root {
             --bg-dark: #0a0e14;
@@ -60,6 +62,12 @@
             margin-top: 4px;
         }
 
+        .refresh-status {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: right;
+        }
+
         /* SUMMARY CARDS */
         .metrics-grid {
             display: grid;
@@ -103,7 +111,7 @@
             color: #ffffff;
         }
 
-        /* CONTROLS (SEARCH & FILTER) */
+        /* CONTROLS (SEARCH) */
         .controls {
             display: flex;
             justify-content: space-between;
@@ -181,7 +189,7 @@
             letter-spacing: 0.5px;
         }
 
-        .badge-normal {
+        .badge-normal, .badge-safe {
             background: rgba(0, 255, 136, 0.1);
             color: var(--status-safe);
             border: 1px solid var(--status-safe);
@@ -193,11 +201,17 @@
             border: 1px solid var(--status-warning);
         }
 
-        .badge-critical {
+        .badge-critical, .badge-danger {
             background: rgba(255, 51, 102, 0.1);
             color: var(--status-critical);
             border: 1px solid var(--status-critical);
             box-shadow: 0 0 8px rgba(255, 51, 102, 0.3);
+        }
+
+        .loading-text {
+            text-align: center;
+            padding: 20px;
+            color: var(--cyan-primary);
         }
     </style>
 </head>
@@ -209,25 +223,28 @@
             <h1>MONITORING CLEARANCE SWING CIRCLE</h1>
             <p>Real-Time Undercarriage & Swing System Wear Tracking</p>
         </div>
+        <div class="refresh-status" id="lastUpdated">
+            Live Connected to Google Sheets
+        </div>
     </header>
 
     <!-- METRICS / SUMMARY CARDS -->
     <div class="metrics-grid">
         <div class="card">
             <h3>Total Unit Monitored</h3>
-            <div class="value">24</div>
+            <div class="value" id="totalUnit">0</div>
         </div>
         <div class="card">
             <h3>Status Normal</h3>
-            <div class="value" style="color: var(--status-safe);">18</div>
+            <div class="value" id="countNormal" style="color: var(--status-safe);">0</div>
         </div>
         <div class="card">
             <h3>Status Warning</h3>
-            <div class="value" style="color: var(--status-warning);">4</div>
+            <div class="value" id="countWarning" style="color: var(--status-warning);">0</div>
         </div>
         <div class="card">
             <h3>Status Critical</h3>
-            <div class="value" style="color: var(--status-critical);">2</div>
+            <div class="value" id="countCritical" style="color: var(--status-critical);">0</div>
         </div>
     </div>
 
@@ -247,53 +264,96 @@
                     <th>SITE</th>
                     <th>TANGGAL</th>
                     <th>HM</th>
-                    <th>WORN (%)</th>
+                    <th>WORN</th>
                     <th>STATUS WORN</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
-                <!-- Sample Data Row 1 -->
                 <tr>
-                    <td><strong>EX-201</strong></td>
-                    <td>MHU</td>
-                    <td>2026-03-01</td>
-                    <td>12,450</td>
-                    <td>35%</td>
-                    <td><span class="badge badge-normal">NORMAL</span></td>
-                </tr>
-                <!-- Sample Data Row 2 -->
-                <tr>
-                    <td><strong>EX-202</strong></td>
-                    <td>MBL</td>
-                    <td>2026-03-02</td>
-                    <td>15,100</td>
-                    <td>78%</td>
-                    <td><span class="badge badge-warning">WARNING</span></td>
-                </tr>
-                <!-- Sample Data Row 3 -->
-                <tr>
-                    <td><strong>EX-203</strong></td>
-                    <td>CDI</td>
-                    <td>2026-03-02</td>
-                    <td>18,320</td>
-                    <td>92%</td>
-                    <td><span class="badge badge-critical">CRITICAL</span></td>
-                </tr>
-                <!-- Sample Data Row 4 -->
-                <tr>
-                    <td><strong>EX-204</strong></td>
-                    <td>BAYAN</td>
-                    <td>2026-03-03</td>
-                    <td>9,800</td>
-                    <td>20%</td>
-                    <td><span class="badge badge-normal">NORMAL</span></td>
+                    <td colspan="6" class="loading-text">Memuat Data dari Google Sheets...</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <!-- SIMPLE SEARCH SCRIPT -->
+    <!-- SCRIPT LOGIC (FETCH CSV DATA & SEARCH) -->
     <script>
+        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSTqHoQ-vvmkYXEV_LLxsyQsaCxo25Voc-8q_N9JD7rDhUMl5HZtGPU4m08LRr4kwDGegegXpVcJZBk/pub?output=csv';
+
+        // Fungsi untuk Mengambil & Menampilkan Data dari Google Sheets
+        function loadSheetData() {
+            Papa.parse(csvUrl, {
+                download: true,
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    const data = results.data;
+                    renderTableAndCards(data);
+                },
+                error: function(err) {
+                    console.error('Error fetching CSV:', err);
+                    document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" style="color:red; text-align:center;">Gagal memuat data dari Google Sheets!</td></tr>';
+                }
+            });
+        }
+
+        // Render Data ke Tabel dan Hitung Card Stats
+        function renderTableAndCards(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            let normalCount = 0;
+            let warningCount = 0;
+            let criticalCount = 0;
+            let totalCount = 0;
+
+            data.forEach(row => {
+                // Mengambil nilai berdasarkan nama kolom di Spreadsheet
+                const noUnit = row['NO UNIT'] || row['No Unit'] || row['UNIT'] || '-';
+                const site = row['SITE'] || row['Site'] || '-';
+                const tanggal = row['TANGGAL'] || row['Tanggal'] || '-';
+                const hm = row['HM'] || row['Hm'] || '-';
+                const worn = row['WORN'] || row['Worn'] || '-';
+                const statusWorn = (row['STATUS WORN'] || row['Status Worn'] || row['STATUS'] || '-').toUpperCase().trim();
+
+                if (noUnit === '-' && site === '-') return; // Lewati baris kosong
+
+                totalCount++;
+
+                // Logika Badge Status & Counter Stats
+                let badgeClass = 'badge-normal';
+                if (statusWorn.includes('WARN') || statusWorn.includes('KUNING')) {
+                    badgeClass = 'badge-warning';
+                    warningCount++;
+                } else if (statusWorn.includes('CRIT') || statusWorn.includes('DANGER') || statusWorn.includes('MERAH')) {
+                    badgeClass = 'badge-critical';
+                    criticalCount++;
+                } else {
+                    badgeClass = 'badge-normal';
+                    normalCount++;
+                }
+
+                // Append Baris ke Tabel
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${noUnit}</strong></td>
+                    <td>${site}</td>
+                    <td>${tanggal}</td>
+                    <td>${hm}</td>
+                    <td>${worn}</td>
+                    <td><span class="badge ${badgeClass}">${statusWorn}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Update Ringkasan Stat Cards
+            document.getElementById('totalUnit').innerText = totalCount;
+            document.getElementById('countNormal').innerText = normalCount;
+            document.getElementById('countWarning').innerText = warningCount;
+            document.getElementById('countCritical').innerText = criticalCount;
+        }
+
+        // Feature Filter/Search
         document.getElementById('searchInput').addEventListener('keyup', function() {
             let filter = this.value.toUpperCase();
             let rows = document.getElementById('tableBody').getElementsByTagName('tr');
@@ -307,6 +367,9 @@
                 }
             }
         });
+
+        // Jalankan Pemuatan Data Pertama Kali
+        loadSheetData();
     </script>
 </body>
 </html>
