@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BSS UCR MONITORING - Alarm & Achievement PPU</title>
+    <title>BSS MONITORING - Clearance Swing Circle</title>
     <!-- Font & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -393,11 +393,11 @@
     <div class="top-nav">
         <div class="brand-logo">
             <div class="brand-icon">
-                <i class="fa-solid fa-shield-halved"></i>
+                <i class="fa-solid fa-arrows-spin"></i>
             </div>
             <div class="brand-text">
-                <h1>BSS UCR MONITORING</h1>
-                <p>Program Pemeriksaan Undercarriage (PPU)</p>
+                <h1>MONITORING CLEARANCE SWING CIRCLE</h1>
+                <p>Program Pengukuran Clearance Swing Circle (BSS)</p>
             </div>
         </div>
 
@@ -414,9 +414,9 @@
 
     <!-- MAIN TABS -->
     <div class="main-tabs">
-        <button class="tab-btn active"><i class="fa-solid fa-border-all"></i> PPU</button>
+        <button class="tab-btn active"><i class="fa-solid fa-border-all"></i> Swing Clearance</button>
         <button class="tab-btn"><i class="fa-solid fa-clock-rotate-left"></i> Review Lifetime</button>
-        <button class="tab-btn"><i class="fa-solid fa-circle-exclamation"></i> Alarm Worn Up 80%</button>
+        <button class="tab-btn"><i class="fa-solid fa-circle-exclamation"></i> Alarm Worn > 80%</button>
         <button class="tab-btn"><i class="fa-solid fa-wrench"></i> Rekomendasi Replace</button>
     </div>
 
@@ -424,17 +424,17 @@
     <div class="banner">
         <div class="badge-status">
             <div class="dot"></div>
-            PLANT &bull; Monitoring PPU Active
+            PLANT &bull; Monitoring Swing Circle Active
         </div>
-        <h2>Alarm & Achievement PPU</h2>
-        <p>PROGRAM PEMERIKSAAN UNDERCARRIAGE (PPU)</p>
+        <h2>MONITORING CLEARANCE SWING CIRCLE</h2>
+        <p>MONITORING KEHAUSAN DAN CLEARANCE SWING CIRCLE</p>
     </div>
 
     <!-- FILTER PANEL -->
     <div class="filter-panel">
         <div class="filter-header">
             <div class="filter-title">
-                <i class="fa-solid fa-filter"></i> Filter Unit & Site Monitoring PPU
+                <i class="fa-solid fa-filter"></i> Filter Unit & Site Monitoring Clearance
             </div>
             <button class="reset-btn">
                 <i class="fa-solid fa-rotate-left"></i> Reset Filter
@@ -460,9 +460,9 @@
                 </select>
             </div>
             <div class="filter-group">
-                <label>ALARM PPU</label>
+                <label>STATUS WORN</label>
                 <select>
-                    <option>Semua Kategori</option>
+                    <option>Semua Status</option>
                 </select>
             </div>
         </div>
@@ -474,7 +474,7 @@
             <div class="metric-info">
                 <h4>TOTAL UNIT MONITORED</h4>
                 <div class="value">0 Unit</div>
-                <p>Dalam monitoring UCR Site</p>
+                <p>Dalam monitoring Clearance</p>
             </div>
             <div class="metric-icon blue">
                 <i class="fa-solid fa-truck-monster"></i>
@@ -483,9 +483,9 @@
 
         <div class="metric-card">
             <div class="metric-info">
-                <h4>OVER INTERVAL PPU</h4>
+                <h4>WORN > 80%</h4>
                 <div class="value yellow">0 Unit</div>
-                <p class="yellow">Perlu Dilakukan PPU</p>
+                <p class="yellow">Perlu Pengawasan Ketat</p>
             </div>
             <div class="metric-icon yellow">
                 <i class="fa-solid fa-triangle-exclamation"></i>
@@ -494,20 +494,20 @@
 
         <div class="metric-card">
             <div class="metric-info">
-                <h4>MENDEKATI PLAN PPU</h4>
+                <h4>CRITICAL (100% WORN)</h4>
                 <div class="value red">0 Unit</div>
-                <p class="red">Perlu schedule PPU</p>
+                <p class="red">Perlu Schedule Replace</p>
             </div>
             <div class="metric-icon red">
-                <i class="fa-solid fa-bullseye"></i>
+                <i class="fa-solid fa-circle-radiation"></i>
             </div>
         </div>
 
         <div class="metric-card">
             <div class="metric-info">
-                <h4>PPU ACHIEVEMENT</h4>
-                <div class="value">0%</div>
-                <p>Inspeksi On-Schedule</p>
+                <h4>NORMAL CLEARANCE</h4>
+                <div class="value">0 Unit</div>
+                <p>Kondisi Aman</p>
             </div>
             <div class="metric-icon green">
                 <i class="fa-solid fa-circle-check"></i>
@@ -518,13 +518,13 @@
     <!-- CHARTS -->
     <div class="charts-grid">
         <div class="chart-card">
-            <h3>PPU Achievement Masing-masing Site (%)</h3>
+            <h3>Rata-rata Worn Swing Circle Masing-masing Site (%)</h3>
             <div class="chart-container">
                 <canvas id="achievementChart"></canvas>
             </div>
         </div>
         <div class="chart-card">
-            <h3>Total OVER Interval PPU Masing-masing Site</h3>
+            <h3>Total Unit Critical Worn Masing-masing Site</h3>
             <div class="chart-container">
                 <canvas id="overIntervalChart"></canvas>
             </div>
@@ -533,35 +533,35 @@
 
     <!-- TABLE -->
     <div class="table-card">
-        <h3>Status Unit Over Interval PPU</h3>
+        <h3>Data Monitoring Clearance Swing Circle</h3>
         <table>
             <thead>
                 <tr>
-                    <th>SITE</th>
-                    <th>TYPE</th>
-                    <th>MODEL UNIT</th>
                     <th>NO UNIT</th>
-                    <th>ALARM PPU STATUS</th>
-                    <th>DURASI OVER (HM)</th>
+                    <th>SITE</th>
+                    <th>TANGGAL</th>
+                    <th>HM</th>
+                    <th>WORN</th>
+                    <th>STATUS WORN</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">Tidak ada data unit over interval</td>
+                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">Tidak ada data monitoring clearance</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
     <script>
-        // CONFIG CHART ACHIEVEMENT
+        // CONFIG CHART RATA-RATA WORN
         const ctxAchievement = document.getElementById('achievementChart').getContext('2d');
         new Chart(ctxAchievement, {
             type: 'bar',
             data: {
-                labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+                labels: ['Site A', 'Site B', 'Site C'],
                 datasets: [{
-                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    data: [0, 0, 0],
                     backgroundColor: '#3b82f6'
                 }]
             },
@@ -588,7 +588,7 @@
             }
         });
 
-        // CONFIG CHART OVER INTERVAL
+        // CONFIG CHART CRITICAL WORN
         const ctxOver = document.getElementById('overIntervalChart').getContext('2d');
         new Chart(ctxOver, {
             type: 'bar',
