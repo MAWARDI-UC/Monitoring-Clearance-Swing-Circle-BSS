@@ -38,8 +38,17 @@
         body {
             background-color: var(--bg-body);
             color: var(--text-main);
-            padding: 24px;
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* CONTAINER DENGAN MARGIN CENTER & SPACE KIRI-KANAN */
+        .app-container {
+            width: 100%;
+            max-width: 1400px; /* Batas lebar maksimum agar rapi di monitor besar */
+            padding: 24px 32px; /* 32px spasi di kiri dan kanan */
+            margin: 0 auto;
         }
 
         /* TOP NAVIGATION */
@@ -381,6 +390,9 @@
         }
 
         @media (max-width: 640px) {
+            .app-container {
+                padding: 16px;
+            }
             .filter-grid, .metrics-grid, .charts-grid {
                 grid-template-columns: 1fr;
             }
@@ -389,168 +401,170 @@
 </head>
 <body>
 
-    <!-- TOP NAV -->
-    <div class="top-nav">
-        <div class="brand-logo">
-            <div class="brand-icon">
-                <i class="fa-solid fa-arrows-spin"></i>
+    <div class="app-container">
+        <!-- TOP NAV -->
+        <div class="top-nav">
+            <div class="brand-logo">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-arrows-spin"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>MONITORING CLEARANCE SWING CIRCLE</h1>
+                    <p>Program Pengukuran Clearance Swing Circle (BSS)</p>
+                </div>
             </div>
-            <div class="brand-text">
-                <h1>MONITORING CLEARANCE SWING CIRCLE</h1>
-                <p>Program Pengukuran Clearance Swing Circle (BSS)</p>
+
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="name">Administrator System</div>
+                    <div class="role">Role: <span>Plant / Technical</span></div>
+                </div>
             </div>
         </div>
 
-        <div class="user-profile">
-            <div class="user-avatar">
-                <i class="fa-solid fa-user"></i>
-            </div>
-            <div class="user-info">
-                <div class="name">Administrator System</div>
-                <div class="role">Role: <span>Plant / Technical</span></div>
-            </div>
+        <!-- MAIN TABS -->
+        <div class="main-tabs">
+            <button class="tab-btn active"><i class="fa-solid fa-border-all"></i> Swing Clearance</button>
+            <button class="tab-btn"><i class="fa-solid fa-clock-rotate-left"></i> Review Lifetime</button>
+            <button class="tab-btn"><i class="fa-solid fa-circle-exclamation"></i> Alarm Worn > 80%</button>
+            <button class="tab-btn"><i class="fa-solid fa-wrench"></i> Rekomendasi Replace</button>
         </div>
-    </div>
 
-    <!-- MAIN TABS -->
-    <div class="main-tabs">
-        <button class="tab-btn active"><i class="fa-solid fa-border-all"></i> Swing Clearance</button>
-        <button class="tab-btn"><i class="fa-solid fa-clock-rotate-left"></i> Review Lifetime</button>
-        <button class="tab-btn"><i class="fa-solid fa-circle-exclamation"></i> Alarm Worn > 80%</button>
-        <button class="tab-btn"><i class="fa-solid fa-wrench"></i> Rekomendasi Replace</button>
-    </div>
-
-    <!-- BANNER -->
-    <div class="banner">
-        <div class="badge-status">
-            <div class="dot"></div>
-            PLANT &bull; Monitoring Swing Circle Active
+        <!-- BANNER -->
+        <div class="banner">
+            <div class="badge-status">
+                <div class="dot"></div>
+                PLANT &bull; Monitoring Swing Circle Active
+            </div>
+            <h2>MONITORING CLEARANCE SWING CIRCLE</h2>
+            <p>MONITORING KEHAUSAN DAN CLEARANCE SWING CIRCLE</p>
         </div>
-        <h2>MONITORING CLEARANCE SWING CIRCLE</h2>
-        <p>MONITORING KEHAUSAN DAN CLEARANCE SWING CIRCLE</p>
-    </div>
 
-    <!-- FILTER PANEL -->
-    <div class="filter-panel">
-        <div class="filter-header">
-            <div class="filter-title">
-                <i class="fa-solid fa-filter"></i> Filter Unit & Site Monitoring Clearance
+        <!-- FILTER PANEL -->
+        <div class="filter-panel">
+            <div class="filter-header">
+                <div class="filter-title">
+                    <i class="fa-solid fa-filter"></i> Filter Unit & Site Monitoring Clearance
+                </div>
+                <button class="reset-btn">
+                    <i class="fa-solid fa-rotate-left"></i> Reset Filter
+                </button>
             </div>
-            <button class="reset-btn">
-                <i class="fa-solid fa-rotate-left"></i> Reset Filter
-            </button>
-        </div>
-        <div class="filter-grid">
-            <div class="filter-group">
-                <label>SITE</label>
-                <select>
-                    <option>Semua Site</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>TYPE</label>
-                <select>
-                    <option>Semua TYPE</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>MODEL</label>
-                <select>
-                    <option>Semua Model</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>STATUS WORN</label>
-                <select>
-                    <option>Semua Status</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <!-- METRIC CARDS -->
-    <div class="metrics-grid">
-        <div class="metric-card">
-            <div class="metric-info">
-                <h4>TOTAL UNIT MONITORED</h4>
-                <div class="value">0 Unit</div>
-                <p>Dalam monitoring Clearance</p>
-            </div>
-            <div class="metric-icon blue">
-                <i class="fa-solid fa-truck-monster"></i>
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label>SITE</label>
+                    <select>
+                        <option>Semua Site</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>TYPE</label>
+                    <select>
+                        <option>Semua TYPE</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>MODEL</label>
+                    <select>
+                        <option>Semua Model</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>STATUS WORN</label>
+                    <select>
+                        <option>Semua Status</option>
+                    </select>
+                </div>
             </div>
         </div>
 
-        <div class="metric-card">
-            <div class="metric-info">
-                <h4>WORN > 80%</h4>
-                <div class="value yellow">0 Unit</div>
-                <p class="yellow">Perlu Pengawasan Ketat</p>
+        <!-- METRIC CARDS -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-info">
+                    <h4>TOTAL UNIT MONITORED</h4>
+                    <div class="value">0 Unit</div>
+                    <p>Dalam monitoring Clearance</p>
+                </div>
+                <div class="metric-icon blue">
+                    <i class="fa-solid fa-truck-monster"></i>
+                </div>
             </div>
-            <div class="metric-icon yellow">
-                <i class="fa-solid fa-triangle-exclamation"></i>
+
+            <div class="metric-card">
+                <div class="metric-info">
+                    <h4>WORN > 80%</h4>
+                    <div class="value yellow">0 Unit</div>
+                    <p class="yellow">Perlu Pengawasan Ketat</p>
+                </div>
+                <div class="metric-icon yellow">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-info">
+                    <h4>CRITICAL (100% WORN)</h4>
+                    <div class="value red">0 Unit</div>
+                    <p class="red">Perlu Schedule Replace</p>
+                </div>
+                <div class="metric-icon red">
+                    <i class="fa-solid fa-circle-radiation"></i>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-info">
+                    <h4>NORMAL CLEARANCE</h4>
+                    <div class="value">0 Unit</div>
+                    <p>Kondisi Aman</p>
+                </div>
+                <div class="metric-icon green">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
             </div>
         </div>
 
-        <div class="metric-card">
-            <div class="metric-info">
-                <h4>CRITICAL (100% WORN)</h4>
-                <div class="value red">0 Unit</div>
-                <p class="red">Perlu Schedule Replace</p>
+        <!-- CHARTS -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Rata-rata Worn Swing Circle Masing-masing Site (%)</h3>
+                <div class="chart-container">
+                    <canvas id="achievementChart"></canvas>
+                </div>
             </div>
-            <div class="metric-icon red">
-                <i class="fa-solid fa-circle-radiation"></i>
+            <div class="chart-card">
+                <h3>Total Unit Critical Worn Masing-masing Site</h3>
+                <div class="chart-container">
+                    <canvas id="overIntervalChart"></canvas>
+                </div>
             </div>
         </div>
 
-        <div class="metric-card">
-            <div class="metric-info">
-                <h4>NORMAL CLEARANCE</h4>
-                <div class="value">0 Unit</div>
-                <p>Kondisi Aman</p>
-            </div>
-            <div class="metric-icon green">
-                <i class="fa-solid fa-circle-check"></i>
-            </div>
+        <!-- TABLE -->
+        <div class="table-card">
+            <h3>Data Monitoring Clearance Swing Circle</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>NO UNIT</th>
+                        <th>SITE</th>
+                        <th>TANGGAL</th>
+                        <th>HM</th>
+                        <th>WORN</th>
+                        <th>STATUS WORN</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">Tidak ada data monitoring clearance</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </div>
-
-    <!-- CHARTS -->
-    <div class="charts-grid">
-        <div class="chart-card">
-            <h3>Rata-rata Worn Swing Circle Masing-masing Site (%)</h3>
-            <div class="chart-container">
-                <canvas id="achievementChart"></canvas>
-            </div>
-        </div>
-        <div class="chart-card">
-            <h3>Total Unit Critical Worn Masing-masing Site</h3>
-            <div class="chart-container">
-                <canvas id="overIntervalChart"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <!-- TABLE -->
-    <div class="table-card">
-        <h3>Data Monitoring Clearance Swing Circle</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>NO UNIT</th>
-                    <th>SITE</th>
-                    <th>TANGGAL</th>
-                    <th>HM</th>
-                    <th>WORN</th>
-                    <th>STATUS WORN</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">Tidak ada data monitoring clearance</td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 
     <script>
