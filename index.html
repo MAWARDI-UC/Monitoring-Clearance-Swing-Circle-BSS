@@ -3,544 +3,617 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MONITORING CLEARANCE SWING CIRCLE</title>
-    <!-- Font Google: Inter / Roboto -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <!-- PapaParse Library - FIXED CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <title>BSS UCR MONITORING - Alarm & Achievement PPU</title>
+    <!-- Font & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
         :root {
-            --bg-dark: #0a0e14;
-            --card-bg: #121824;
-            --border-color: #1a2638;
-            --cyan-primary: #00f2ff;
-            --cyan-glow: rgba(0, 242, 255, 0.25);
-            --text-main: #e0f7fa;
-            --text-muted: #8198a6;
-            
-            /* Status Colors */
-            --status-safe: #00ff88;
-            --status-warning: #ffcc00;
-            --status-critical: #ff3366;
+            --bg-body: #0b111e;
+            --bg-card: #121a29;
+            --bg-card-hover: #182235;
+            --border-color: #1e293b;
+            --accent-yellow: #f59e0b;
+            --accent-yellow-bg: rgba(245, 158, 11, 0.15);
+            --accent-red: #ef4444;
+            --accent-red-bg: rgba(239, 68, 68, 0.15);
+            --accent-green: #10b981;
+            --accent-green-bg: rgba(16, 185, 129, 0.15);
+            --accent-blue: #3b82f6;
+            --accent-blue-bg: rgba(59, 130, 246, 0.15);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            background-color: var(--bg-dark);
+            background-color: var(--bg-body);
             color: var(--text-main);
             padding: 24px;
             min-height: 100vh;
         }
 
-        /* HEADER */
-        header {
+        /* TOP NAVIGATION */
+        .top-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--border-color);
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .header-title h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 24px;
-            color: var(--cyan-primary);
-            text-shadow: 0 0 10px var(--cyan-glow);
-            letter-spacing: 1.5px;
-        }
-
-        .header-title p {
-            color: var(--text-muted);
-            font-size: 13px;
-            margin-top: 4px;
-        }
-
-        .refresh-status {
-            font-size: 12px;
-            color: var(--text-muted);
-            text-align: right;
-        }
-
-        /* SUMMARY CARDS */
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
             margin-bottom: 24px;
         }
 
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--accent-yellow-bg);
+            border: 1px solid var(--accent-yellow);
             border-radius: 8px;
-            padding: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            position: relative;
-            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-yellow);
+            font-size: 20px;
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--cyan-primary);
+        .brand-text h1 {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
         }
 
-        .card h3 {
+        .brand-text p {
             font-size: 12px;
-            text-transform: uppercase;
+            color: var(--accent-yellow);
+            font-weight: 600;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 10px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--text-muted);
-            letter-spacing: 1px;
-            margin-bottom: 8px;
         }
 
-        .card .value {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 28px;
+        .user-info .name {
+            font-size: 13px;
             font-weight: 700;
-            color: #ffffff;
         }
 
-        /* CONTROLS (SEARCH & FILTER) */
-        .controls {
+        .user-info .role {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .user-info .role span {
+            color: var(--accent-yellow);
+            font-weight: 600;
+        }
+
+        /* MAIN TABS */
+        .main-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-yellow);
+            color: #000;
+            border-color: var(--accent-yellow);
+        }
+
+        /* BANNER */
+        .banner {
+            background: linear-gradient(90deg, #182232 0%, #121824 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--accent-yellow-bg);
+            color: var(--accent-yellow);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .badge-status .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-green);
+            border-radius: 50%;
+        }
+
+        .banner h2 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .banner p {
+            font-size: 12px;
+            color: var(--accent-yellow);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* FILTER PANEL */
+        .filter-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .filter-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
-            gap: 12px;
-            flex-wrap: wrap;
         }
 
-        .search-box input {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 10px 16px;
-            color: var(--text-main);
-            outline: none;
-            width: 280px;
-            transition: all 0.3s ease;
-        }
-
-        .search-box input:focus {
-            border-color: var(--cyan-primary);
-            box-shadow: 0 0 8px var(--cyan-glow);
-        }
-
-        .btn-refresh {
-            background: var(--cyan-primary);
-            color: var(--bg-dark);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
+        .filter-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
             font-weight: 700;
+        }
+
+        .filter-title i {
+            color: var(--accent-yellow);
+        }
+
+        .reset-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .btn-refresh:hover {
-            background: #00d9ff;
-            box-shadow: 0 0 12px var(--cyan-glow);
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
         }
 
-        .btn-refresh:disabled {
-            background: var(--text-muted);
-            cursor: not-allowed;
+        .filter-group label {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 8px;
         }
 
-        /* TABLE STYLING */
-        .table-container {
-            background: var(--card-bg);
+        .filter-group select {
+            width: 100%;
+            background: #0b111e;
             border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px 14px;
             border-radius: 8px;
-            overflow-x: auto;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            font-size: 13px;
+            outline: none;
+        }
+
+        /* METRIC CARDS */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .metric-info h4 {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .metric-info .value {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .metric-info .value.yellow { color: var(--accent-yellow); }
+        .metric-info .value.red { color: var(--accent-red); }
+
+        .metric-info p {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .metric-info p.yellow { color: var(--accent-yellow); }
+        .metric-info p.red { color: var(--accent-red); }
+
+        .metric-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .metric-icon.blue { background: var(--accent-blue-bg); color: var(--accent-blue); }
+        .metric-icon.yellow { background: var(--accent-yellow-bg); color: var(--accent-yellow); }
+        .metric-icon.red { background: var(--accent-red-bg); color: var(--accent-red); }
+        .metric-icon.green { background: var(--accent-green-bg); color: var(--accent-green); }
+
+        /* CHARTS SECTION */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .chart-card h3 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 260px;
+            width: 100%;
+        }
+
+        /* TABLE SECTION */
+        .table-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .table-card h3 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 13px;
             text-align: left;
-            font-size: 14px;
-        }
-
-        thead {
-            background: rgba(0, 242, 255, 0.05);
-            border-bottom: 2px solid var(--border-color);
-            position: sticky;
-            top: 0;
         }
 
         th {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 15px;
+            color: var(--text-muted);
+            font-size: 11px;
             font-weight: 700;
-            color: var(--cyan-primary);
-            padding: 14px 16px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         td {
-            padding: 12px 16px;
+            padding: 14px 16px;
             border-bottom: 1px solid var(--border-color);
-            color: #d1d5db;
+            color: var(--text-main);
         }
 
-        tbody tr:hover {
-            background: rgba(0, 242, 255, 0.02);
-        }
-
-        /* STATUS BADGES */
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-normal {
-            background: rgba(0, 255, 136, 0.1);
-            color: var(--status-safe);
-            border: 1px solid var(--status-safe);
-        }
-
-        .badge-warning {
-            background: rgba(255, 204, 0, 0.1);
-            color: var(--status-warning);
-            border: 1px solid var(--status-warning);
-        }
-
-        .badge-critical {
-            background: rgba(255, 51, 102, 0.1);
-            color: var(--status-critical);
-            border: 1px solid var(--status-critical);
-            box-shadow: 0 0 8px rgba(255, 51, 102, 0.3);
-        }
-
-        .loading-text {
-            text-align: center;
-            padding: 20px;
-            color: var(--cyan-primary);
-        }
-
-        .error-message {
-            text-align: center;
-            padding: 20px;
-            color: var(--status-critical);
-            background: rgba(255, 51, 102, 0.1);
-            border-radius: 8px;
-        }
-
-        .no-results {
-            text-align: center;
-            padding: 20px;
-            color: var(--text-muted);
-        }
-
-        .refresh-timer {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-top: 8px;
-        }
-
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                align-items: flex-start;
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .filter-grid, .metrics-grid, .charts-grid {
+                grid-template-columns: 1fr 1fr;
             }
+        }
 
-            .metrics-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            }
-
-            .search-box input {
-                width: 100%;
-            }
-
-            .controls {
-                flex-direction: column;
-            }
-
-            table {
-                font-size: 12px;
-            }
-
-            th, td {
-                padding: 8px 12px;
+        @media (max-width: 640px) {
+            .filter-grid, .metrics-grid, .charts-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
-    <header>
-        <div class="header-title">
-            <h1>MONITORING CLEARANCE SWING CIRCLE</h1>
-            <p>Real-Time Undercarriage & Swing System Wear Tracking</p>
+    <!-- TOP NAV -->
+    <div class="top-nav">
+        <div class="brand-logo">
+            <div class="brand-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div class="brand-text">
+                <h1>BSS UCR MONITORING</h1>
+                <p>Program Pemeriksaan Undercarriage (PPU)</p>
+            </div>
         </div>
-        <div class="refresh-status">
-            <div id="lastUpdated">Loading...</div>
-            <div class="refresh-timer" id="refreshTimer"></div>
-        </div>
-    </header>
 
-    <!-- METRICS / SUMMARY CARDS -->
+        <div class="user-profile">
+            <div class="user-avatar">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="user-info">
+                <div class="name">Administrator System</div>
+                <div class="role">Role: <span>Plant / Technical</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN TABS -->
+    <div class="main-tabs">
+        <button class="tab-btn active"><i class="fa-solid fa-border-all"></i> PPU</button>
+        <button class="tab-btn"><i class="fa-solid fa-clock-rotate-left"></i> Review Lifetime</button>
+        <button class="tab-btn"><i class="fa-solid fa-circle-exclamation"></i> Alarm Worn Up 80%</button>
+        <button class="tab-btn"><i class="fa-solid fa-wrench"></i> Rekomendasi Replace</button>
+    </div>
+
+    <!-- BANNER -->
+    <div class="banner">
+        <div class="badge-status">
+            <div class="dot"></div>
+            PLANT &bull; Monitoring PPU Active
+        </div>
+        <h2>Alarm & Achievement PPU</h2>
+        <p>PROGRAM PEMERIKSAAN UNDERCARRIAGE (PPU)</p>
+    </div>
+
+    <!-- FILTER PANEL -->
+    <div class="filter-panel">
+        <div class="filter-header">
+            <div class="filter-title">
+                <i class="fa-solid fa-filter"></i> Filter Unit & Site Monitoring PPU
+            </div>
+            <button class="reset-btn">
+                <i class="fa-solid fa-rotate-left"></i> Reset Filter
+            </button>
+        </div>
+        <div class="filter-grid">
+            <div class="filter-group">
+                <label>SITE</label>
+                <select>
+                    <option>Semua Site</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>TYPE</label>
+                <select>
+                    <option>Semua TYPE</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>MODEL</label>
+                <select>
+                    <option>Semua Model</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>ALARM PPU</label>
+                <select>
+                    <option>Semua Kategori</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- METRIC CARDS -->
     <div class="metrics-grid">
-        <div class="card">
-            <h3>Total Unit Monitored</h3>
-            <div class="value" id="totalUnit">0</div>
+        <div class="metric-card">
+            <div class="metric-info">
+                <h4>TOTAL UNIT MONITORED</h4>
+                <div class="value">0 Unit</div>
+                <p>Dalam monitoring UCR Site</p>
+            </div>
+            <div class="metric-icon blue">
+                <i class="fa-solid fa-truck-monster"></i>
+            </div>
         </div>
-        <div class="card">
-            <h3>Status Normal</h3>
-            <div class="value" id="countNormal" style="color: var(--status-safe);">0</div>
+
+        <div class="metric-card">
+            <div class="metric-info">
+                <h4>OVER INTERVAL PPU</h4>
+                <div class="value yellow">0 Unit</div>
+                <p class="yellow">Perlu Dilakukan PPU</p>
+            </div>
+            <div class="metric-icon yellow">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
         </div>
-        <div class="card">
-            <h3>Status Warning</h3>
-            <div class="value" id="countWarning" style="color: var(--status-warning);">0</div>
+
+        <div class="metric-card">
+            <div class="metric-info">
+                <h4>MENDEKATI PLAN PPU</h4>
+                <div class="value red">0 Unit</div>
+                <p class="red">Perlu schedule PPU</p>
+            </div>
+            <div class="metric-icon red">
+                <i class="fa-solid fa-bullseye"></i>
+            </div>
         </div>
-        <div class="card">
-            <h3>Status Critical</h3>
-            <div class="value" id="countCritical" style="color: var(--status-critical);">0</div>
+
+        <div class="metric-card">
+            <div class="metric-info">
+                <h4>PPU ACHIEVEMENT</h4>
+                <div class="value">0%</div>
+                <p>Inspeksi On-Schedule</p>
+            </div>
+            <div class="metric-icon green">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
         </div>
     </div>
 
-    <!-- CONTROLS -->
-    <div class="controls">
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Cari No Unit / Site / Status...">
+    <!-- CHARTS -->
+    <div class="charts-grid">
+        <div class="chart-card">
+            <h3>PPU Achievement Masing-masing Site (%)</h3>
+            <div class="chart-container">
+                <canvas id="achievementChart"></canvas>
+            </div>
         </div>
-        <button class="btn-refresh" id="refreshBtn" onclick="loadSheetData()">🔄 Refresh Data</button>
+        <div class="chart-card">
+            <h3>Total OVER Interval PPU Masing-masing Site</h3>
+            <div class="chart-container">
+                <canvas id="overIntervalChart"></canvas>
+            </div>
+        </div>
     </div>
 
-    <!-- MAIN TABLE -->
-    <div class="table-container">
+    <!-- TABLE -->
+    <div class="table-card">
+        <h3>Status Unit Over Interval PPU</h3>
         <table>
             <thead>
                 <tr>
-                    <th>NO UNIT</th>
                     <th>SITE</th>
-                    <th>TANGGAL</th>
-                    <th>HM</th>
-                    <th>WORN (%)</th>
-                    <th>STATUS WORN</th>
+                    <th>TYPE</th>
+                    <th>MODEL UNIT</th>
+                    <th>NO UNIT</th>
+                    <th>ALARM PPU STATUS</th>
+                    <th>DURASI OVER (HM)</th>
                 </tr>
             </thead>
-            <tbody id="tableBody">
+            <tbody>
                 <tr>
-                    <td colspan="6" class="loading-text">📊 Memuat Data dari Google Sheets...</td>
+                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">Tidak ada data unit over interval</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <!-- SCRIPT LOGIC (FETCH CSV DATA & SEARCH) -->
     <script>
-        // ============================================
-        // KONFIGURASI GOOGLE SHEETS
-        // ============================================
-        // GANTI DENGAN ID SPREADSHEET ANDA
-        const SPREADSHEET_ID = '2PACX-1vSTqHoQ-vvmkYXEV_LLxsyQsaCxo25Voc-8q_N9JD7rDhUMl5HZtGPU4m08LRr4kwDGegegXpVcJZBk';
-        const csvUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv`;
-        
-        let allData = [];
-        let refreshInterval = null;
-
-        // ============================================
-        // FUNGSI: Load Data dari Google Sheets
-        // ============================================
-        function loadSheetData() {
-            const refreshBtn = document.getElementById('refreshBtn');
-            refreshBtn.disabled = true;
-            refreshBtn.textContent = '⏳ Loading...';
-
-            Papa.parse(csvUrl, {
-                download: true,
-                header: true,
-                skipEmptyLines: true,
-                complete: function(results) {
-                    if (results.data && results.data.length > 0) {
-                        allData = results.data.filter(row => {
-                            // Filter baris yang tidak kosong
-                            return (row['NO UNIT'] && row['NO UNIT'].trim()) || 
-                                   (row['UNIT'] && row['UNIT'].trim()) ||
-                                   (row['No Unit'] && row['No Unit'].trim());
-                        });
-                        
-                        renderTableAndCards(allData);
-                        updateLastUpdated();
-                        console.log(`✅ Data loaded: ${allData.length} records`);
-                    } else {
-                        showError('Tidak ada data ditemukan di spreadsheet!');
+        // CONFIG CHART ACHIEVEMENT
+        const ctxAchievement = document.getElementById('achievementChart').getContext('2d');
+        new Chart(ctxAchievement, {
+            type: 'bar',
+            data: {
+                labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+                datasets: [{
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    backgroundColor: '#3b82f6'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 100,
+                        ticks: {
+                            stepSize: 20,
+                            callback: value => value + '%',
+                            color: '#94a3b8'
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    },
+                    x: {
+                        ticks: { color: '#94a3b8' },
+                        grid: { display: false }
                     }
-
-                    refreshBtn.disabled = false;
-                    refreshBtn.textContent = '🔄 Refresh Data';
-                },
-                error: function(err) {
-                    console.error('❌ Error fetching CSV:', err);
-                    showError('Gagal memuat data! Periksa:<br>1. Spreadsheet ID benar<br>2. Spreadsheet di-share publik<br>3. Koneksi internet stabil');
-                    refreshBtn.disabled = false;
-                    refreshBtn.textContent = '🔄 Refresh Data';
-                }
-            });
-        }
-
-        // ============================================
-        // FUNGSI: Render Tabel dan Update Cards
-        // ============================================
-        function renderTableAndCards(data) {
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
-
-            let normalCount = 0;
-            let warningCount = 0;
-            let criticalCount = 0;
-            let totalCount = 0;
-
-            data.forEach(row => {
-                // Extract data dengan fallback untuk variasi nama kolom
-                const noUnit = row['NO UNIT'] || row['No Unit'] || row['UNIT'] || row['Unit'] || '-';
-                const site = row['SITE'] || row['Site'] || row['LOKASI'] || row['Lokasi'] || '-';
-                const tanggal = row['TANGGAL'] || row['Tanggal'] || row['DATE'] || row['Date'] || '-';
-                const hm = row['HM'] || row['Hm'] || row['HOURS'] || row['Hours'] || '-';
-                const worn = row['WORN'] || row['Worn'] || row['WEAR'] || row['Wear'] || '-';
-                const statusWorn = (row['STATUS WORN'] || row['Status Worn'] || row['STATUS'] || row['Status'] || 'UNKNOWN')
-                    .toUpperCase()
-                    .trim();
-
-                if (!noUnit || noUnit === '-') return;
-
-                totalCount++;
-
-                // Tentukan badge class berdasarkan status
-                let badgeClass = 'badge-normal';
-                let displayStatus = statusWorn;
-
-                if (statusWorn.includes('WARN') || statusWorn.includes('KUNING') || statusWorn.includes('ORANGE')) {
-                    badgeClass = 'badge-warning';
-                    warningCount++;
-                    displayStatus = 'WARNING';
-                } else if (statusWorn.includes('CRIT') || statusWorn.includes('DANGER') || statusWorn.includes('MERAH') || statusWorn.includes('RED')) {
-                    badgeClass = 'badge-critical';
-                    criticalCount++;
-                    displayStatus = 'CRITICAL';
-                } else {
-                    badgeClass = 'badge-normal';
-                    normalCount++;
-                    displayStatus = 'NORMAL';
-                }
-
-                // Create table row
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${noUnit}</strong></td>
-                    <td>${site}</td>
-                    <td>${tanggal}</td>
-                    <td>${hm}</td>
-                    <td>${worn}</td>
-                    <td><span class="badge ${badgeClass}">${displayStatus}</span></td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            // Jika tidak ada data
-            if (totalCount === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="no-results">❌ Tidak ada data yang ditemukan</td></tr>';
-                document.getElementById('totalUnit').innerText = '0';
-                document.getElementById('countNormal').innerText = '0';
-                document.getElementById('countWarning').innerText = '0';
-                document.getElementById('countCritical').innerText = '0';
-                return;
-            }
-
-            // Update summary cards
-            document.getElementById('totalUnit').innerText = totalCount;
-            document.getElementById('countNormal').innerText = normalCount;
-            document.getElementById('countWarning').innerText = warningCount;
-            document.getElementById('countCritical').innerText = criticalCount;
-        }
-
-        // ============================================
-        // FUNGSI: Show Error Message
-        // ============================================
-        function showError(message) {
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = `<tr><td colspan="6" class="error-message">${message}</td></tr>`;
-        }
-
-        // ============================================
-        // FUNGSI: Update Last Updated Time
-        // ============================================
-        function updateLastUpdated() {
-            const now = new Date();
-            const timeStr = now.toLocaleString('id-ID', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            document.getElementById('lastUpdated').innerText = `✅ Last Updated: ${timeStr}`;
-        }
-
-        // ============================================
-        // FUNGSI: Search/Filter
-        // ============================================
-        document.getElementById('searchInput').addEventListener('keyup', function() {
-            let filter = this.value.toUpperCase();
-            let rows = document.getElementById('tableBody').getElementsByTagName('tr');
-            let visibleCount = 0;
-
-            for (let i = 0; i < rows.length; i++) {
-                let textContent = rows[i].textContent || rows[i].innerText;
-                if (textContent.toUpperCase().indexOf(filter) > -1) {
-                    rows[i].style.display = "";
-                    visibleCount++;
-                } else {
-                    rows[i].style.display = "none";
-                }
-            }
-
-            // Show message if no results
-            if (visibleCount === 0 && filter.length > 0) {
-                const tbody = document.getElementById('tableBody');
-                if (tbody.querySelector('.no-results') === null) {
-                    tbody.innerHTML += '<tr><td colspan="6" class="no-results">Tidak ada hasil pencarian untuk: "' + this.value + '"</td></tr>';
                 }
             }
         });
 
-        // ============================================
-        // INIT: Auto-load data on page load
-        // ============================================
-        window.addEventListener('load', function() {
-            loadSheetData();
-            
-            // Auto-refresh setiap 5 menit (300000 ms)
-            refreshInterval = setInterval(loadSheetData, 300000);
-        });
-
-        // Cleanup on page unload
-        window.addEventListener('unload', function() {
-            if (refreshInterval) clearInterval(refreshInterval);
+        // CONFIG CHART OVER INTERVAL
+        const ctxOver = document.getElementById('overIntervalChart').getContext('2d');
+        new Chart(ctxOver, {
+            type: 'bar',
+            data: {
+                labels: ['Site A', 'Site B', 'Site C'],
+                datasets: [{
+                    data: [0, 0, 0],
+                    backgroundColor: '#ef4444'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        ticks: { color: '#94a3b8' },
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                    },
+                    x: {
+                        ticks: { color: '#94a3b8' },
+                        grid: { display: false }
+                    }
+                }
+            }
         });
     </script>
 </body>
