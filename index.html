@@ -208,11 +208,18 @@
         td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
 
         .badge-worn {
-            padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;
+            padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; display: inline-block;
         }
         .badge-worn.normal { background: var(--accent-green-bg); color: var(--accent-green); }
         .badge-worn.warning { background: var(--accent-yellow-bg); color: var(--accent-yellow); }
         .badge-worn.critical { background: var(--accent-red-bg); color: var(--accent-red); }
+        .badge-worn.urgent { background: #581c87; color: #e9d5ff; border: 1px solid #a855f7; }
+
+        .kat-circle {
+            width: 26px; height: 26px; border-radius: 50%; background: #1e293b;
+            color: #fff; font-weight: 800; font-size: 12px; display: inline-flex;
+            align-items: center; justify-content: center; border: 1px solid var(--border-color);
+        }
 
         @media (max-width: 1024px) {
             .filter-grid, .metrics-grid, .charts-grid { grid-template-columns: 1fr 1fr; }
@@ -260,7 +267,6 @@
                 <p>MONITORING KEHAUSAN DAN CLEARANCE SWING CIRCLE</p>
             </div>
 
-            <!-- FILTER PANEL TAB 1 -->
             <div class="filter-panel">
                 <div class="filter-header">
                     <div class="filter-title"><i class="fa-solid fa-filter"></i> Filter Unit & Site Monitoring Clearance</div>
@@ -273,7 +279,6 @@
                 </div>
             </div>
 
-            <!-- METRIC CARDS TAB 1 -->
             <div class="metrics-grid">
                 <div class="metric-card">
                     <div class="metric-info"><h4>TOTAL UNIT MONITORED</h4><div class="value" id="totalUnits">0 Unit</div><p>Dalam monitoring Clearance</p></div>
@@ -293,13 +298,11 @@
                 </div>
             </div>
 
-            <!-- CHARTS TAB 1 -->
             <div class="charts-grid">
                 <div class="chart-card"><h3>Distribusi Status Condition Swing Circle Per Site</h3><div class="chart-container"><canvas id="avgChart"></canvas></div></div>
                 <div class="chart-card"><h3>Total Unit Critical Worn Masing-masing Site</h3><div class="chart-container"><canvas id="criticalChart"></canvas></div></div>
             </div>
 
-            <!-- TABLE TAB 1 -->
             <div class="table-card">
                 <h3>Data Monitoring Clearance Swing Circle</h3>
                 <table>
@@ -319,7 +322,6 @@
                 <p>RINGKASAN ESTIMASI UMUR PAKAI, POLICY, DEVIASI &amp; AKUMULASI HOUR METER (HM)</p>
             </div>
 
-            <!-- FILTER PANEL TAB 2 -->
             <div class="filter-panel">
                 <div class="filter-header">
                     <div class="filter-title"><i class="fa-solid fa-filter"></i> Filter Unit & Site Review Lifetime</div>
@@ -332,90 +334,67 @@
                 </div>
             </div>
 
-            <!-- METRIC CARDS TAB 2 -->
             <div class="metrics-grid">
                 <div class="metric-card">
-                    <div class="metric-info">
-                        <h4>TOTAL UNIT LIFETIME</h4>
-                        <div class="value" id="ltTotalUnits">0 Unit</div>
-                        <p>Unit terdata lifetime</p>
-                    </div>
+                    <div class="metric-info"><h4>TOTAL UNIT LIFETIME</h4><div class="value" id="ltTotalUnits">0 Unit</div><p>Unit terdata lifetime</p></div>
                     <div class="metric-icon blue"><i class="fa-solid fa-clock"></i></div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-info">
-                        <h4>TERCAPAI</h4>
-                        <div class="value green" id="ltTercapaiCount">0 Unit</div>
-                        <p class="green">Status Lifetime Tercapai</p>
-                    </div>
+                    <div class="metric-info"><h4>TERCAPAI</h4><div class="value green" id="ltTercapaiCount">0 Unit</div><p class="green">Status Lifetime Tercapai</p></div>
                     <div class="metric-icon green"><i class="fa-solid fa-circle-check"></i></div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-info">
-                        <h4>MENDEKATI POLICY</h4>
-                        <div class="value yellow" id="ltMendekatiCount">0 Unit</div>
-                        <p class="yellow">Status Mendekati Policy</p>
-                    </div>
+                    <div class="metric-info"><h4>MENDEKATI POLICY</h4><div class="value yellow" id="ltMendekatiCount">0 Unit</div><p class="yellow">Status Mendekati Policy</p></div>
                     <div class="metric-icon yellow"><i class="fa-solid fa-triangle-exclamation"></i></div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-info">
-                        <h4>AMAN</h4>
-                        <div class="value blue" id="ltAmanCount">0 Unit</div>
-                        <p>Status Kondisi Aman</p>
-                    </div>
+                    <div class="metric-info"><h4>AMAN</h4><div class="value blue" id="ltAmanCount">0 Unit</div><p>Status Kondisi Aman</p></div>
                     <div class="metric-icon blue"><i class="fa-solid fa-shield-halved"></i></div>
                 </div>
             </div>
 
-            <!-- CHARTS TAB 2 -->
             <div class="charts-grid">
-                <div class="chart-card">
-                    <h3>Top 10 Unit Lifetime (HM) Tertinggi</h3>
-                    <div class="chart-container"><canvas id="topLifetimeChart"></canvas></div>
-                </div>
-                <div class="chart-card">
-                    <h3>Distribusi Status Lifetime Per Site</h3>
-                    <div class="chart-container"><canvas id="siteAvgLifetimeChart"></canvas></div>
-                </div>
+                <div class="chart-card"><h3>Top 10 Unit Lifetime (HM) Tertinggi</h3><div class="chart-container"><canvas id="topLifetimeChart"></canvas></div></div>
+                <div class="chart-card"><h3>Distribusi Status Lifetime Per Site</h3><div class="chart-container"><canvas id="siteAvgLifetimeChart"></canvas></div></div>
             </div>
 
-            <!-- TABLE TAB 2 -->
             <div class="table-card">
                 <h3>Histori &amp; Analisis Lifetime Unit</h3>
+                <table>
+                    <thead>
+                        <tr><th>SITE</th><th>NO UNIT</th><th>MODEL</th><th>LIFETIME / HM</th><th>POLICY</th><th>DEVIASI</th><th>STATUS</th></tr>
+                    </thead>
+                    <tbody id="tableLifetimeBody"><tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 24px;">Memuat data...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ================= TAB 3: REKOMENDASI REPLACE (MATRIKS 3x3) ================= -->
+        <div id="tab-replace" class="tab-content">
+            <div class="banner">
+                <div class="badge-status"><div class="dot"></div> PLANT &bull; Component Replacement Plan</div>
+                <h2>REKOMENDASI REPLACEMENT (MATRIKS WORN vs POLICY)</h2>
+                <p>PENJADWALAN DAN REKOMENDASI PENGGANTIAN BERDASARKAN KATEGORI MATRIKS 1 - 9</p>
+            </div>
+
+            <div class="table-card">
+                <h3>Schedule & Prioritas Replacement Unit</h3>
                 <table>
                     <thead>
                         <tr>
                             <th>SITE</th>
                             <th>NO UNIT</th>
                             <th>MODEL</th>
-                            <th>LIFETIME / HM</th>
-                            <th>POLICY</th>
-                            <th>DEVIASI</th>
-                            <th>STATUS</th>
+                            <th>WORN (CLEARANCE)</th>
+                            <th>POLICY (LIFETIME)</th>
+                            <th style="text-align: center;">KAT.</th>
+                            <th>PRIORITAS</th>
+                            <th>REKOMENDASI KEPUTUSAN / REMARK</th>
                         </tr>
                     </thead>
-                    <tbody id="tableLifetimeBody">
-                        <tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 24px;">Memuat data...</td></tr>
+                    <tbody id="tableReplaceBody">
+                        <tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 24px;">Belum ada data rekomendasi</td></tr>
                     </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- ================= TAB 3: REKOMENDASI REPLACE ================= -->
-        <div id="tab-replace" class="tab-content">
-            <div class="banner">
-                <div class="badge-status"><div class="dot"></div> PLANT &bull; Component Replacement Plan</div>
-                <h2>REKOMENDASI REPLACEMENT</h2>
-                <p>PENJADWALAN DAN REKOMENDASI PENGGANTIAN SWING CIRCLE</p>
-            </div>
-            <div class="table-card">
-                <h3>Schedule Replacement Unit</h3>
-                <table>
-                    <thead>
-                        <tr><th>SITE</th><th>NO UNIT</th><th>MODEL</th><th>WORN (%)</th><th>PRIORITAS</th><th>REKOMENDASI KEPUTUSAN</th></tr>
-                    </thead>
-                    <tbody id="tableReplaceBody"><tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">Belum ada rekomendasi penggantian</td></tr></tbody>
                 </table>
             </div>
         </div>
@@ -431,33 +410,21 @@
         let rawDataClearance = [];
         let rawDataLifetime = [];
 
-        // Instances Chart Tab 1
         let avgChartInstance = null;
         let criticalChartInstance = null;
-
-        // Instances Chart Tab 2
         let topLifetimeChartInstance = null;
         let siteAvgLifetimeChartInstance = null;
 
-        // HELPER PERBAIKAN ANGKAS DESIMAL INDONESIA (E.g., "27034,2" -> 27034.2)
         function parseFormattedNumber(val) {
             if (val === null || val === undefined || val === '') return 0;
             if (typeof val === 'number') return val;
-            
-            let str = String(val).trim();
-            str = str.replace(/\./g, '');  // Hapus titik ribuan
-            str = str.replace(',', '.');   // Ubah koma desimal menjadi titik
-            
+            let str = String(val).trim().replace(/\./g, '').replace(',', '.');
             const num = parseFloat(str);
             return isNaN(num) ? 0 : num;
         }
 
-        // HELPER FORMAT ANGKA DENGAN DESIMAL KE TAMPILAN INDONESIA
         function formatNumberId(val) {
-            return new Intl.NumberFormat('id-ID', {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 2
-            }).format(val);
+            return new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(val);
         }
 
         function switchTab(tabId, btnElement) {
@@ -475,7 +442,6 @@
                     const rows = results.data;
                     if (!rows || rows.length <= 1) return;
 
-                    // Data Tab 1 (Clearance)
                     rawDataClearance = rows.slice(1).map(row => ({
                         site: row[1] ? row[1].trim() : '',
                         noUnit: row[2] ? row[2].trim() : '',
@@ -486,27 +452,25 @@
                         status: row[7] ? row[7].trim() : 'NORMAL'
                     })).filter(item => item.noUnit !== '' || item.site !== '');
 
-                    // Data Tab 2 (Lifetime) - Mengacu pada Kolom B, I, J, L, M, N, O
                     rawDataLifetime = rows.slice(1).map(row => ({
-                        site: row[1] ? row[1].trim() : '',        // Kolom B (Indeks 1)
-                        noUnit: row[8] ? row[8].trim() : '',      // Kolom I (Indeks 8)
-                        model: row[9] ? row[9].trim() : '',       // Kolom J (Indeks 9)
-                        lifetime: row[11] ? row[11].trim() : '0', // Kolom L (Indeks 11)
-                        policy: row[12] ? row[12].trim() : '0',   // Kolom M (Indeks 12)
-                        deviasi: row[13] ? row[13].trim() : '0',  // Kolom N (Indeks 13)
-                        status: row[14] ? row[14].trim() : ''     // Kolom O (Indeks 14)
+                        site: row[1] ? row[1].trim() : '',
+                        noUnit: row[8] ? row[8].trim() : '',
+                        model: row[9] ? row[9].trim() : '',
+                        lifetime: row[11] ? row[11].trim() : '0',
+                        policy: row[12] ? row[12].trim() : '0',
+                        deviasi: row[13] ? row[13].trim() : '0',
+                        status: row[14] ? row[14].trim() : ''
                     })).filter(item => item.noUnit !== '' || item.site !== '');
 
                     populateFilterOptions();
                     applyFiltersTab1();
                     applyFiltersTab2();
-                    renderOtherTabs(rawDataClearance);
+                    renderTab3Replace();
                 }
             });
         }
 
         function populateFilterOptions() {
-            // Options Tab 1
             const sites1 = [...new Set(rawDataClearance.map(d => d.site).filter(Boolean))];
             const models1 = [...new Set(rawDataClearance.map(d => d.model).filter(Boolean))];
             const statuses1 = [...new Set(rawDataClearance.map(d => d.status).filter(Boolean))];
@@ -515,7 +479,6 @@
             document.getElementById('filterModel1').innerHTML = '<option value="">Semua Model</option>' + models1.map(m => `<option value="${m}">${m}</option>`).join('');
             document.getElementById('filterStatus1').innerHTML = '<option value="">Semua Status</option>' + statuses1.map(st => `<option value="${st}">${st}</option>`).join('');
 
-            // Options Tab 2
             const sites2 = [...new Set(rawDataLifetime.map(d => d.site).filter(Boolean))];
             const models2 = [...new Set(rawDataLifetime.map(d => d.model).filter(Boolean))];
             const statuses2 = [...new Set(rawDataLifetime.map(d => d.status).filter(Boolean))];
@@ -525,7 +488,7 @@
             document.getElementById('filterStatus2').innerHTML = '<option value="">Semua Status</option>' + statuses2.map(st => `<option value="${st}">${st}</option>`).join('');
         }
 
-        // ================= FILTER & RENDER TAB 1 =================
+        // ================= TAB 1 =================
         function applyFiltersTab1() {
             const s = document.getElementById('filterSite1').value.toLowerCase();
             const m = document.getElementById('filterModel1').value.toLowerCase();
@@ -551,13 +514,10 @@
 
                 if (item.site && !siteStatusMap[item.site]) siteStatusMap[item.site] = { normal: 0, waspada: 0, kritis: 0 };
 
-                if (wornVal >= 80 || statusUpper.includes('CRITICAL') || statusUpper.includes('KRITIS')) {
+                if (wornVal >= 80 || statusUpper.includes('KRITIS') || statusUpper.includes('CRITICAL')) {
                     countCritical++;
-                    if (item.site) {
-                        siteCriticalMap[item.site] = (siteCriticalMap[item.site] || 0) + 1;
-                        siteStatusMap[item.site].kritis += 1;
-                    }
-                } else if (wornVal >= 60 || statusUpper.includes('WORN') || statusUpper.includes('WASPADA')) {
+                    if (item.site) { siteCriticalMap[item.site] = (siteCriticalMap[item.site] || 0) + 1; siteStatusMap[item.site].kritis += 1; }
+                } else if (wornVal >= 60 || statusUpper.includes('WASPADA') || statusUpper.includes('WORN')) {
                     countWorn80++;
                     if (item.site) siteStatusMap[item.site].waspada += 1;
                 } else {
@@ -566,8 +526,8 @@
                 }
 
                 let badgeClass = 'normal';
-                if (wornVal >= 80 || statusUpper.includes('CRITICAL') || statusUpper.includes('KRITIS')) badgeClass = 'critical';
-                else if (wornVal >= 60 || statusUpper.includes('WORN') || statusUpper.includes('WASPADA')) badgeClass = 'warning';
+                if (wornVal >= 80 || statusUpper.includes('KRITIS') || statusUpper.includes('CRITICAL')) badgeClass = 'critical';
+                else if (wornVal >= 60 || statusUpper.includes('WASPADA') || statusUpper.includes('WORN')) badgeClass = 'warning';
 
                 tableHTML += `
                     <tr>
@@ -645,7 +605,7 @@
             });
         }
 
-        // ================= FILTER & RENDER TAB 2 (REVIEW LIFETIME) =================
+        // ================= TAB 2 =================
         function applyFiltersTab2() {
             const s = document.getElementById('filterSite2').value.toLowerCase();
             const m = document.getElementById('filterModel2').value.toLowerCase();
@@ -661,10 +621,7 @@
         }
 
         function renderDashboardTab2(data) {
-            let totalUnits = data.length;
-            let countTercapai = 0;
-            let countMendekati = 0;
-            let countAman = 0;
+            let totalUnits = data.length, countTercapai = 0, countMendekati = 0, countAman = 0;
             let siteStatusMap = {};
             let tableHTML = '';
 
@@ -672,12 +629,9 @@
                 const ltVal = parseFormattedNumber(item.lifetime);
                 const policyVal = parseFormattedNumber(item.policy);
                 const deviasiVal = parseFormattedNumber(item.deviasi);
-                
                 const statusClean = item.status ? item.status.trim().toUpperCase() : '';
 
-                if (item.site && !siteStatusMap[item.site]) {
-                    siteStatusMap[item.site] = { tercapai: 0, mendekati: 0, aman: 0 };
-                }
+                if (item.site && !siteStatusMap[item.site]) siteStatusMap[item.site] = { tercapai: 0, mendekati: 0, aman: 0 };
 
                 if (statusClean.includes('TERCAPAI')) {
                     countTercapai++;
@@ -691,11 +645,8 @@
                 }
 
                 let badgeClass = 'normal';
-                if (statusClean.includes('TERCAPAI') || statusClean.includes('OVER')) {
-                    badgeClass = 'critical';
-                } else if (statusClean.includes('MENDEKATI') || statusClean.includes('WARNING')) {
-                    badgeClass = 'warning';
-                }
+                if (statusClean.includes('TERCAPAI') || statusClean.includes('OVER')) badgeClass = 'critical';
+                else if (statusClean.includes('MENDEKATI') || statusClean.includes('WARNING')) badgeClass = 'warning';
 
                 tableHTML += `
                     <tr>
@@ -714,7 +665,6 @@
             document.getElementById('ltTercapaiCount').innerText = countTercapai + ' Unit';
             document.getElementById('ltMendekatiCount').innerText = countMendekati + ' Unit';
             document.getElementById('ltAmanCount').innerText = countAman + ' Unit';
-
             document.getElementById('tableLifetimeBody').innerHTML = tableHTML || '<tr><td colspan="7" style="text-align:center;">Data tidak ditemukan</td></tr>';
 
             renderChartsTab2(data, siteStatusMap);
@@ -734,8 +684,7 @@
                     datasets: [{ label: 'Lifetime (HM)', data: topValues.length ? topValues : [0], backgroundColor: '#3b82f6' }]
                 },
                 options: {
-                    indexAxis: 'y',
-                    responsive: true, maintainAspectRatio: false,
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
                     plugins: {
                         legend: { display: false },
                         datalabels: { anchor: 'end', align: 'end', color: '#fff', font: { weight: 'bold', size: 10 }, formatter: v => v > 0 ? formatNumberId(v) : '' }
@@ -778,30 +727,80 @@
             });
         }
 
-        // RENDER REKOMENDASI REPLACE
-        function renderOtherTabs(data) {
+        // ================= LOGIKA MATRIKS 3x3 TAB 3 =================
+        function getCategoryAndRemark(wornStatus, policyStatus) {
+            let wornScore = 0;   // Normal = 0, Waspada = 3, Kritis = 6
+            let policyScore = 0; // Aman = 1, Mendekati Policy = 2, Tercapai = 3
+
+            const worn = (wornStatus || '').toUpperCase();
+            const policy = (policyStatus || '').toUpperCase();
+
+            if (worn.includes('KRITIS') || worn.includes('CRITICAL')) wornScore = 6;
+            else if (worn.includes('WASPADA') || worn.includes('WORN')) wornScore = 3;
+            else wornScore = 0;
+
+            if (policy.includes('TERCAPAI') || policy.includes('OVER')) policyScore = 3;
+            else if (policy.includes('MENDEKATI') || policy.includes('WARNING')) policyScore = 2;
+            else policyScore = 1;
+
+            const category = wornScore + policyScore;
+
+            const matrixConfig = {
+                1: { priority: 'LOW', badge: 'normal', remark: 'Kondisi prima. Inspeksi rutin sesuai schedule.' },
+                2: { priority: 'LOW', badge: 'normal', remark: 'Kondisi fisik aman. Prepare pemesanan part (indent).' },
+                3: { priority: 'MEDIUM', badge: 'warning', remark: 'Policy tercapai. Perpendek interval inspeksi fisik.' },
+                4: { priority: 'MEDIUM', badge: 'warning', remark: 'Keausan dini terdeteksi. Evaluasi sistem greasing.' },
+                5: { priority: 'MEDIUM', badge: 'warning', remark: 'Siapkan komponen & jadwal replacement PM berikutnya.' },
+                6: { priority: 'HIGH', badge: 'critical', remark: 'Komponen siap ganti. Jadwalkan eksekusi replacement.' },
+                7: { priority: 'HIGH', badge: 'critical', remark: 'Abnormal wear! Investigasi fisik & siapkan replacement.' },
+                8: { priority: 'HIGH', badge: 'critical', remark: 'Prioritas tinggi replacement. Batasi beban operasional.' },
+                9: { priority: 'URGENT', badge: 'urgent', remark: 'Breakdown Risk! Segera jadwalkan replacement secepatnya.' }
+            };
+
+            return { category: category, ...(matrixConfig[category] || { priority: 'LOW', badge: 'normal', remark: '-' }) };
+        }
+
+        // RENDER TAB 3 (REKOMENDASI REPLACE BASED ON MATRIKS)
+        function renderTab3Replace() {
             let replaceHTML = '';
 
-            data.forEach(item => {
-                const wornVal = parseFormattedNumber(item.wornLast.replace('%', ''));
-                const statusUpper = item.status.toUpperCase();
-
-                if (wornVal >= 60 || statusUpper.includes('WORN') || statusUpper.includes('WASPADA') || statusUpper.includes('CRITICAL') || statusUpper.includes('KRITIS')) {
-                    const isCritical = wornVal >= 80 || statusUpper.includes('CRITICAL') || statusUpper.includes('KRITIS');
-                    replaceHTML += `
-                        <tr>
-                            <td>${item.site}</td>
-                            <td><strong>${item.noUnit}</strong></td>
-                            <td>${item.model}</td>
-                            <td>${item.wornLast}</td>
-                            <td><span class="badge-worn ${isCritical ? 'critical' : 'warning'}">${isCritical ? 'HIGH' : 'MEDIUM'}</span></td>
-                            <td>${isCritical ? 'Schedule Replace Segera (Order Part)' : 'Monitoring Intensif (Prepare Component)'}</td>
-                        </tr>
-                    `;
-                }
+            // Map data lifetime berdasarkan No Unit untuk kemudahan lookup
+            const lifetimeMap = {};
+            rawDataLifetime.forEach(item => {
+                if (item.noUnit) lifetimeMap[item.noUnit.toUpperCase()] = item;
             });
 
-            document.getElementById('tableReplaceBody').innerHTML = replaceHTML || '<tr><td colspan="6" style="text-align:center;">Belum ada rekomendasi penggantian</td></tr>';
+            // Urutkan data berdasarkan prioritas Kategori tertinggi (Kategori 9 ke 1)
+            const combinedData = rawDataClearance.map(cItem => {
+                const lItem = lifetimeMap[cItem.noUnit.toUpperCase()] || {};
+                const res = getCategoryAndRemark(cItem.status, lItem.status);
+                return {
+                    clearance: cItem,
+                    lifetime: lItem,
+                    matrix: res
+                };
+            }).sort((a, b) => b.matrix.category - a.matrix.category);
+
+            combinedData.forEach(item => {
+                const c = item.clearance;
+                const l = item.lifetime;
+                const m = item.matrix;
+
+                replaceHTML += `
+                    <tr>
+                        <td>${c.site}</td>
+                        <td><strong>${c.noUnit}</strong></td>
+                        <td>${c.model}</td>
+                        <td>${c.wornLast} <small style="color:var(--text-muted);">(${c.status})</small></td>
+                        <td>${l.lifetime ? formatNumberId(parseFormattedNumber(l.lifetime)) + ' HM' : '-'} <small style="color:var(--text-muted);">(${l.status || 'N/A'})</small></td>
+                        <td style="text-align: center;"><span class="kat-circle">${m.category}</span></td>
+                        <td><span class="badge-worn ${m.badge}">${m.priority}</span></td>
+                        <td>${m.remark}</td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('tableReplaceBody').innerHTML = replaceHTML || '<tr><td colspan="8" style="text-align:center;">Belum ada data rekomendasi</td></tr>';
         }
 
         // EVENT LISTENERS TAB 1
