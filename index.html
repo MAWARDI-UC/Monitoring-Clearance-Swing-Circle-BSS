@@ -105,7 +105,7 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* BANNER */
+        /* BANNER (STANDALONE TAB 1 & 2) */
         .banner {
             background: linear-gradient(90deg, #182232 0%, #121824 100%);
             border: 1px solid var(--border-color); border-radius: 12px;
@@ -118,7 +118,7 @@
             border-radius: 6px; margin-bottom: 12px;
         }
         .badge-status .dot { width: 6px; height: 6px; background: var(--accent-green); border-radius: 50%; }
-        .banner h2 { font-size: 26px; font-weight: 800; margin-bottom: 4px; }
+        .banner h2 { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
         .banner p { font-size: 12px; color: var(--accent-yellow); font-weight: 700; }
 
         /* FILTER PANEL */
@@ -133,7 +133,7 @@
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 16px;
         }
-        .filter-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; }
+        .filter-title { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
         .filter-title i { color: var(--accent-yellow); }
         .reset-btn {
             background: none; border: none; color: var(--text-muted);
@@ -221,16 +221,30 @@
             align-items: center; justify-content: center; border: 1px solid var(--border-color);
         }
 
-        /* LAYOUT TAB 3 (BANNER & MATRIX SIDE-BY-SIDE) */
-        .replace-top-container {
-            display: flex;
-            gap: 16px;
+        /* ===== PRESISION LAYOUT ELEGAN TAB 3 ===== */
+        .replace-top-grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 20px;
             margin-bottom: 24px;
             align-items: stretch;
         }
 
-        .replace-top-container .banner {
-            flex: 1;
+        .replace-left-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .replace-left-col .banner {
+            margin-bottom: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .replace-left-col .filter-panel {
             margin-bottom: 0;
         }
 
@@ -238,35 +252,37 @@
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 12px 16px;
-            width: 380px;
-            flex-shrink: 0;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .matrix-legend-card h4 {
             font-size: 12px;
             font-weight: 700;
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: var(--text-main);
         }
 
         .matrix-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 10.5px;
+            font-size: 11px;
         }
 
         .matrix-table th, .matrix-table td {
-            padding: 4px 6px;
+            padding: 6px 8px;
             border: 1px solid var(--border-color);
             text-align: center;
         }
 
         .matrix-table th {
-            background: #182232;
+            background: #162032;
             color: var(--text-muted);
             font-size: 10px;
+            font-weight: 700;
         }
 
         .matrix-table td.p-low { color: #38bdf8; font-weight: 700; }
@@ -276,8 +292,7 @@
 
         @media (max-width: 1024px) {
             .filter-grid, .metrics-grid, .charts-grid { grid-template-columns: 1fr 1fr; }
-            .replace-top-container { flex-direction: column; }
-            .matrix-legend-card { width: 100%; }
+            .replace-top-grid { grid-template-columns: 1fr; }
         }
         @media (max-width: 640px) {
             .app-container { padding: 16px; }
@@ -427,21 +442,37 @@
         <!-- ================= TAB 3: REKOMENDASI REPLACE ================= -->
         <div id="tab-replace" class="tab-content">
             
-            <div class="replace-top-container">
-                <div class="banner">
-                    <div class="badge-status"><div class="dot"></div> PLANT &bull; Component Replacement Plan</div>
-                    <h2>REKOMENDASI REPLACEMENT (MATRIKS WORN vs POLICY)</h2>
-                    <p>PENJADWALAN DAN REKOMENDASI PENGGANTIAN BERDASARKAN KATEGORI MATRIKS 1 - 9</p>
+            <div class="replace-top-grid">
+                <!-- KOLOM KIRI: BANNER + FILTER PANEL -->
+                <div class="replace-left-col">
+                    <div class="banner">
+                        <div class="badge-status"><div class="dot"></div> PLANT &bull; Component Replacement Plan</div>
+                        <h2>REKOMENDASI REPLACEMENT (MATRIKS WORN vs POLICY)</h2>
+                        <p>PENJADWALAN DAN REKOMENDASI PENGGANTIAN BERDASARKAN KATEGORI MATRIKS 1 - 9</p>
+                    </div>
+
+                    <div class="filter-panel">
+                        <div class="filter-header">
+                            <div class="filter-title"><i class="fa-solid fa-filter"></i> Filter Unit & Site Review Lifetime</div>
+                            <button class="reset-btn" id="resetFilterBtn3"><i class="fa-solid fa-rotate-left"></i> Reset Filter</button>
+                        </div>
+                        <div class="filter-grid">
+                            <div class="filter-group"><label>SITE</label><select id="filterSite3"><option value="">Semua Site</option></select></div>
+                            <div class="filter-group"><label>MODEL</label><select id="filterModel3"><option value="">Semua Model</option></select></div>
+                            <div class="filter-group"><label>PRIORITAS</label><select id="filterPrioritas3"><option value="">Semua Prioritas</option></select></div>
+                        </div>
+                    </div>
                 </div>
 
+                <!-- KOLOM KANAN: TABEL MATRIKS REFERENCE -->
                 <div class="matrix-legend-card">
                     <h4>Rekomendasi Matriks Prioritas & Remark</h4>
                     <table class="matrix-table">
                         <thead>
                             <tr>
-                                <th>Kategori</th>
-                                <th>Kombinasi (Worn + Policy)</th>
-                                <th>Prioritas</th>
+                                <th>KATEGORI</th>
+                                <th>KOMBINASI (WORN + POLICY)</th>
+                                <th>PRIORITAS</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -459,18 +490,7 @@
                 </div>
             </div>
 
-            <div class="filter-panel">
-                <div class="filter-header">
-                    <div class="filter-title"><i class="fa-solid fa-filter"></i> Filter Unit & Site Review Lifetime</div>
-                    <button class="reset-btn" id="resetFilterBtn3"><i class="fa-solid fa-rotate-left"></i> Reset Filter</button>
-                </div>
-                <div class="filter-grid" style="grid-template-columns: repeat(3, 1fr);">
-                    <div class="filter-group"><label>SITE</label><select id="filterSite3"><option value="">Semua Site</option></select></div>
-                    <div class="filter-group"><label>MODEL</label><select id="filterModel3"><option value="">Semua Model</option></select></div>
-                    <div class="filter-group"><label>PRIORITAS</label><select id="filterPrioritas3"><option value="">Semua Prioritas</option></select></div>
-                </div>
-            </div>
-
+            <!-- TABEL UTAMA -->
             <div class="table-card">
                 <h3>Schedule & Prioritas Replacement Unit</h3>
                 <table>
