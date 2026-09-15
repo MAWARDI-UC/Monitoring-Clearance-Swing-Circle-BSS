@@ -334,44 +334,51 @@
             </div>
 
             <!-- METRIC CARDS TAB 2 -->
-<div class="metrics-grid">
-    <div class="metric-card">
-        <div class="metric-info">
-            <h4>TOTAL UNIT LIFETIME</h4>
-            <div class="value" id="ltTotalUnits">0 Unit</div>
-            <p>Unit terdata lifetime</p>
-        </div>
-        <div class="metric-icon blue"><i class="fa-solid fa-clock"></i></div>
-    </div>
-    <div class="metric-card">
-        <div class="metric-info">
-            <h4>TERCAPAI</h4>
-            <div class="value green" id="ltTercapaiCount">0 Unit</div>
-            <p class="green">Status Lifetime Tercapai</p>
-        </div>
-        <div class="metric-icon green"><i class="fa-solid fa-circle-check"></i></div>
-    </div>
-    <div class="metric-card">
-        <div class="metric-info">
-            <h4>MENDEKATI POLICY</h4>
-            <div class="value yellow" id="ltMendekatiCount">0 Unit</div>
-            <p class="yellow">Status Mendekati Policy</p>
-        </div>
-        <div class="metric-icon yellow"><i class="fa-solid fa-triangle-exclamation"></i></div>
-    </div>
-    <div class="metric-card">
-        <div class="metric-info">
-            <h4>AMAN</h4>
-            <div class="value blue" id="ltAmanCount">0 Unit</div>
-            <p>Status Kondisi Aman</p>
-        </div>
-        <div class="metric-icon blue"><i class="fa-solid fa-shield-halved"></i></div>
-    </div>
-</div>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h4>TOTAL UNIT LIFETIME</h4>
+                        <div class="value" id="ltTotalUnits">0 Unit</div>
+                        <p>Unit terdata lifetime</p>
+                    </div>
+                    <div class="metric-icon blue"><i class="fa-solid fa-clock"></i></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h4>TERCAPAI</h4>
+                        <div class="value green" id="ltTercapaiCount">0 Unit</div>
+                        <p class="green">Status Lifetime Tercapai</p>
+                    </div>
+                    <div class="metric-icon green"><i class="fa-solid fa-circle-check"></i></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h4>MENDEKATI POLICY</h4>
+                        <div class="value yellow" id="ltMendekatiCount">0 Unit</div>
+                        <p class="yellow">Status Mendekati Policy</p>
+                    </div>
+                    <div class="metric-icon yellow"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h4>AMAN</h4>
+                        <div class="value blue" id="ltAmanCount">0 Unit</div>
+                        <p>Status Kondisi Aman</p>
+                    </div>
+                    <div class="metric-icon blue"><i class="fa-solid fa-shield-halved"></i></div>
+                </div>
+            </div>
+
             <!-- CHARTS TAB 2 -->
             <div class="charts-grid">
-                <div class="chart-card"><h3>Top 10 Unit Lifetime (HM) Tertinggi</h3><div class="chart-container"><canvas id="topLifetimeChart"></canvas></div></div>
-                <div class="chart-card"><h3>Rata-rata Lifetime (HM) Per Site</h3><div class="chart-container"><canvas id="siteAvgLifetimeChart"></canvas></div></div>
+                <div class="chart-card">
+                    <h3>Top 10 Unit Lifetime (HM) Tertinggi</h3>
+                    <div class="chart-container"><canvas id="topLifetimeChart"></canvas></div>
+                </div>
+                <div class="chart-card">
+                    <h3>Distribusi Status Lifetime Per Site</h3>
+                    <div class="chart-container"><canvas id="siteAvgLifetimeChart"></canvas></div>
+                </div>
             </div>
 
             <!-- TABLE TAB 2 -->
@@ -673,69 +680,72 @@
         }
 
         function renderDashboardTab2(data) {
-    let totalUnits = data.length;
-    let countTercapai = 0;
-    let countMendekati = 0;
-    let countAman = 0;
-    let siteLifetimeMap = {};
-    let tableHTML = '';
+            let totalUnits = data.length;
+            let countTercapai = 0;
+            let countMendekati = 0;
+            let countAman = 0;
+            let siteStatusMap = {};
+            let tableHTML = '';
 
-    data.forEach(item => {
-        const ltVal = parseFormattedNumber(item.lifetime);
-        const policyVal = parseFormattedNumber(item.policy);
-        const deviasiVal = parseFormattedNumber(item.deviasi);
-        
-        // Mengambil teks status dari Kolom O
-        const statusClean = item.status ? item.status.trim().toUpperCase() : '';
+            data.forEach(item => {
+                const ltVal = parseFormattedNumber(item.lifetime);
+                const policyVal = parseFormattedNumber(item.policy);
+                const deviasiVal = parseFormattedNumber(item.deviasi);
+                
+                // Mengambil teks status dari Kolom O
+                const statusClean = item.status ? item.status.trim().toUpperCase() : '';
 
-        // Hitung jumlah berdasarkan isi Kolom O
-        if (statusClean.includes('TERCAPAI')) {
-            countTercapai++;
-        } else if (statusClean.includes('MENDEKATI')) {
-            countMendekati++;
-        } else if (statusClean.includes('AMAN')) {
-            countAman++;
+                // Inisialisasi site jika belum ada di map
+                if (item.site && !siteStatusMap[item.site]) {
+                    siteStatusMap[item.site] = { tercapai: 0, mendekati: 0, aman: 0 };
+                }
+
+                // Hitung jumlah & kelompokkan berdasarkan status Kolom O
+                if (statusClean.includes('TERCAPAI')) {
+                    countTercapai++;
+                    if (item.site) siteStatusMap[item.site].tercapai += 1;
+                } else if (statusClean.includes('MENDEKATI')) {
+                    countMendekati++;
+                    if (item.site) siteStatusMap[item.site].mendekati += 1;
+                } else if (statusClean.includes('AMAN')) {
+                    countAman++;
+                    if (item.site) siteStatusMap[item.site].aman += 1;
+                }
+
+                // Styling badge status tabel
+                let badgeClass = 'normal';
+                if (statusClean.includes('TERCAPAI') || statusClean.includes('OVER')) {
+                    badgeClass = 'critical';
+                } else if (statusClean.includes('MENDEKATI') || statusClean.includes('WARNING')) {
+                    badgeClass = 'warning';
+                }
+
+                tableHTML += `
+                    <tr>
+                        <td>${item.site}</td>
+                        <td><strong>${item.noUnit}</strong></td>
+                        <td>${item.model}</td>
+                        <td><strong>${formatNumberId(ltVal)} HM</strong></td>
+                        <td>${policyVal ? formatNumberId(policyVal) + ' HM' : '-'}</td>
+                        <td style="${deviasiVal > 0 ? 'color: var(--accent-red); font-weight: bold;' : ''}">${deviasiVal ? formatNumberId(deviasiVal) + ' HM' : '0'}</td>
+                        <td><span class="badge-worn ${badgeClass}">${item.status || 'NORMAL'}</span></td>
+                    </tr>
+                `;
+            });
+
+            // Update Angka di Metric Cards Tab 2
+            document.getElementById('ltTotalUnits').innerText = totalUnits + ' Unit';
+            document.getElementById('ltTercapaiCount').innerText = countTercapai + ' Unit';
+            document.getElementById('ltMendekatiCount').innerText = countMendekati + ' Unit';
+            document.getElementById('ltAmanCount').innerText = countAman + ' Unit';
+
+            document.getElementById('tableLifetimeBody').innerHTML = tableHTML || '<tr><td colspan="7" style="text-align:center;">Data tidak ditemukan</td></tr>';
+
+            // Panggil render chart dengan membawa data siteStatusMap
+            renderChartsTab2(data, siteStatusMap);
         }
 
-        // Pengelompokan site untuk grafik
-        if (item.site) {
-            if (!siteLifetimeMap[item.site]) siteLifetimeMap[item.site] = { total: 0, count: 0 };
-            siteLifetimeMap[item.site].total += ltVal;
-            siteLifetimeMap[item.site].count += 1;
-        }
-
-        // Styling badge status tabel
-        let badgeClass = 'normal';
-        if (statusClean.includes('TERCAPAI') || statusClean.includes('OVER')) {
-            badgeClass = 'critical';
-        } else if (statusClean.includes('MENDEKATI') || statusClean.includes('WARNING')) {
-            badgeClass = 'warning';
-        }
-
-        tableHTML += `
-            <tr>
-                <td>${item.site}</td>
-                <td><strong>${item.noUnit}</strong></td>
-                <td>${item.model}</td>
-                <td><strong>${formatNumberId(ltVal)} HM</strong></td>
-                <td>${policyVal ? formatNumberId(policyVal) + ' HM' : '-'}</td>
-                <td style="${deviasiVal > 0 ? 'color: var(--accent-red); font-weight: bold;' : ''}">${deviasiVal ? formatNumberId(deviasiVal) + ' HM' : '0'}</td>
-                <td><span class="badge-worn ${badgeClass}">${item.status || 'NORMAL'}</span></td>
-            </tr>
-        `;
-    });
-
-    // Update Angka di Metric Cards Tab 2
-    document.getElementById('ltTotalUnits').innerText = totalUnits + ' Unit';
-    document.getElementById('ltTercapaiCount').innerText = countTercapai + ' Unit';
-    document.getElementById('ltMendekatiCount').innerText = countMendekati + ' Unit';
-    document.getElementById('ltAmanCount').innerText = countAman + ' Unit';
-
-    document.getElementById('tableLifetimeBody').innerHTML = tableHTML || '<tr><td colspan="7" style="text-align:center;">Data tidak ditemukan</td></tr>';
-
-    renderChartsTab2(data, siteLifetimeMap);
-}
-        function renderChartsTab2(data, siteLifetimeMap) {
+        function renderChartsTab2(data, siteStatusMap) {
             // Chart 1: Top 10 Lifetime Unit
             const top10 = [...data].sort((a, b) => parseFormattedNumber(b.lifetime) - parseFormattedNumber(a.lifetime)).slice(0, 10);
             const topLabels = top10.map(d => d.noUnit);
@@ -763,9 +773,11 @@
                 }
             });
 
-            // Chart 2: Rata-rata Lifetime per Site
-            const sites = Object.keys(siteLifetimeMap);
-            const siteAvgValues = sites.map(s => Math.round(siteLifetimeMap[s].total / siteLifetimeMap[s].count));
+            // Chart 2: Distribusi Status Lifetime Per Site (Stacked/Grouped Bar per Status)
+            const sites = Object.keys(siteStatusMap);
+            const tercapaiData = sites.map(s => siteStatusMap[s].tercapai);
+            const mendekatiData = sites.map(s => siteStatusMap[s].mendekati);
+            const amanData = sites.map(s => siteStatusMap[s].aman);
 
             const ctxSiteAvg = document.getElementById('siteAvgLifetimeChart').getContext('2d');
             if (siteAvgLifetimeChartInstance) siteAvgLifetimeChartInstance.destroy();
@@ -773,17 +785,39 @@
                 type: 'bar',
                 data: {
                     labels: sites.length ? sites : ['No Data'],
-                    datasets: [{ label: 'Rata-rata HM', data: siteAvgValues.length ? siteAvgValues : [0], backgroundColor: '#f59e0b' }]
+                    datasets: [
+                        {
+                            label: 'Tercapai',
+                            data: sites.length ? tercapaiData : [0],
+                            backgroundColor: '#ef4444' // Merah untuk Tercapai
+                        },
+                        {
+                            label: 'Mendekati Policy',
+                            data: sites.length ? mendekatiData : [0],
+                            backgroundColor: '#f59e0b' // Kuning untuk Mendekati Policy
+                        },
+                        {
+                            label: 'Aman',
+                            data: sites.length ? amanData : [0],
+                            backgroundColor: '#3b82f6' // Biru untuk Aman
+                        }
+                    ]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     plugins: {
-                        legend: { display: false },
-                        datalabels: { anchor: 'end', align: 'start', color: '#fff', font: { weight: 'bold', size: 11 }, formatter: v => v > 0 ? formatNumberId(v) : '' }
+                        legend: { display: true, position: 'top', labels: { color: '#f8fafc', font: { size: 11 } } },
+                        datalabels: { 
+                            anchor: 'end', 
+                            align: 'start', 
+                            color: '#fff', 
+                            font: { weight: 'bold', size: 11 }, 
+                            formatter: v => v > 0 ? v : '' 
+                        }
                     },
                     scales: {
                         x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
-                        y: { beginAtZero: true, ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+                        y: { beginAtZero: true, ticks: { color: '#94a3b8', precision: 0 }, grid: { color: '#1e293b' } }
                     }
                 }
             });
