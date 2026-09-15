@@ -249,7 +249,6 @@
         <div class="main-tabs">
             <button class="tab-btn active" onclick="switchTab('tab-clearance', this)"><i class="fa-solid fa-border-all"></i> Swing Clearance</button>
             <button class="tab-btn" onclick="switchTab('tab-lifetime', this)"><i class="fa-solid fa-clock-rotate-left"></i> Review Lifetime</button>
-            <button class="tab-btn" onclick="switchTab('tab-alarm', this)"><i class="fa-solid fa-circle-exclamation"></i> Alarm Worn > 80%</button>
             <button class="tab-btn" onclick="switchTab('tab-replace', this)"><i class="fa-solid fa-wrench"></i> Rekomendasi Replace</button>
         </div>
 
@@ -403,25 +402,7 @@
             </div>
         </div>
 
-        <!-- ================= TAB 3: ALARM WORN > 80% ================= -->
-        <div id="tab-alarm" class="tab-content">
-            <div class="banner" style="border-color: rgba(239, 68, 68, 0.4);">
-                <div class="badge-status" style="background: var(--accent-red-bg); color: var(--accent-red);"><div class="dot" style="background: var(--accent-red);"></div> ALERT &bull; Unit Priority Warning</div>
-                <h2>ALARM KEHAUSAN (WORN &ge; 80%)</h2>
-                <p>DAFTAR UNIT DALAM KONDISI KRITIS &amp; MEMERLUKAN PENGAWASAN KETAT</p>
-            </div>
-            <div class="table-card">
-                <h3 style="color: var(--accent-red);"><i class="fa-solid fa-triangle-exclamation"></i> Daftar Alert Kehausan Kritis</h3>
-                <table>
-                    <thead>
-                        <tr><th>SITE</th><th>NO UNIT</th><th>MODEL</th><th>DATE LAST</th><th>HM LAST</th><th>WORN LAST</th><th>ACTION NEEDED</th></tr>
-                    </thead>
-                    <tbody id="tableAlarmBody"><tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 24px;">Memuat data...</td></tr></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- ================= TAB 4: REKOMENDASI REPLACE ================= -->
+        <!-- ================= TAB 3: REKOMENDASI REPLACE ================= -->
         <div id="tab-replace" class="tab-content">
             <div class="banner">
                 <div class="badge-status"><div class="dot"></div> PLANT &bull; Component Replacement Plan</div>
@@ -692,15 +673,12 @@
                 const policyVal = parseFormattedNumber(item.policy);
                 const deviasiVal = parseFormattedNumber(item.deviasi);
                 
-                // Mengambil teks status dari Kolom O
                 const statusClean = item.status ? item.status.trim().toUpperCase() : '';
 
-                // Inisialisasi site jika belum ada di map
                 if (item.site && !siteStatusMap[item.site]) {
                     siteStatusMap[item.site] = { tercapai: 0, mendekati: 0, aman: 0 };
                 }
 
-                // Hitung jumlah & kelompokkan berdasarkan status Kolom O
                 if (statusClean.includes('TERCAPAI')) {
                     countTercapai++;
                     if (item.site) siteStatusMap[item.site].tercapai += 1;
@@ -712,7 +690,6 @@
                     if (item.site) siteStatusMap[item.site].aman += 1;
                 }
 
-                // Styling badge status tabel
                 let badgeClass = 'normal';
                 if (statusClean.includes('TERCAPAI') || statusClean.includes('OVER')) {
                     badgeClass = 'critical';
@@ -733,7 +710,6 @@
                 `;
             });
 
-            // Update Angka di Metric Cards Tab 2
             document.getElementById('ltTotalUnits').innerText = totalUnits + ' Unit';
             document.getElementById('ltTercapaiCount').innerText = countTercapai + ' Unit';
             document.getElementById('ltMendekatiCount').innerText = countMendekati + ' Unit';
@@ -741,12 +717,10 @@
 
             document.getElementById('tableLifetimeBody').innerHTML = tableHTML || '<tr><td colspan="7" style="text-align:center;">Data tidak ditemukan</td></tr>';
 
-            // Panggil render chart dengan membawa data siteStatusMap
             renderChartsTab2(data, siteStatusMap);
         }
 
         function renderChartsTab2(data, siteStatusMap) {
-            // Chart 1: Top 10 Lifetime Unit
             const top10 = [...data].sort((a, b) => parseFormattedNumber(b.lifetime) - parseFormattedNumber(a.lifetime)).slice(0, 10);
             const topLabels = top10.map(d => d.noUnit);
             const topValues = top10.map(d => parseFormattedNumber(d.lifetime));
@@ -773,7 +747,6 @@
                 }
             });
 
-            // Chart 2: Distribusi Status Lifetime Per Site (Stacked/Grouped Bar per Status)
             const sites = Object.keys(siteStatusMap);
             const tercapaiData = sites.map(s => siteStatusMap[s].tercapai);
             const mendekatiData = sites.map(s => siteStatusMap[s].mendekati);
@@ -786,34 +759,16 @@
                 data: {
                     labels: sites.length ? sites : ['No Data'],
                     datasets: [
-                        {
-                            label: 'Tercapai',
-                            data: sites.length ? tercapaiData : [0],
-                            backgroundColor: '#ef4444' // Merah untuk Tercapai
-                        },
-                        {
-                            label: 'Mendekati Policy',
-                            data: sites.length ? mendekatiData : [0],
-                            backgroundColor: '#f59e0b' // Kuning untuk Mendekati Policy
-                        },
-                        {
-                            label: 'Aman',
-                            data: sites.length ? amanData : [0],
-                            backgroundColor: '#3b82f6' // Biru untuk Aman
-                        }
+                        { label: 'Tercapai', data: sites.length ? tercapaiData : [0], backgroundColor: '#ef4444' },
+                        { label: 'Mendekati Policy', data: sites.length ? mendekatiData : [0], backgroundColor: '#f59e0b' },
+                        { label: 'Aman', data: sites.length ? amanData : [0], backgroundColor: '#3b82f6' }
                     ]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     plugins: {
                         legend: { display: true, position: 'top', labels: { color: '#f8fafc', font: { size: 11 } } },
-                        datalabels: { 
-                            anchor: 'end', 
-                            align: 'start', 
-                            color: '#fff', 
-                            font: { weight: 'bold', size: 11 }, 
-                            formatter: v => v > 0 ? v : '' 
-                        }
+                        datalabels: { anchor: 'end', align: 'start', color: '#fff', font: { weight: 'bold', size: 11 }, formatter: v => v > 0 ? v : '' }
                     },
                     scales: {
                         x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
@@ -823,27 +778,13 @@
             });
         }
 
-        // RENDER TAB 3 & 4
+        // RENDER REKOMENDASI REPLACE
         function renderOtherTabs(data) {
-            let alarmHTML = '', replaceHTML = '';
+            let replaceHTML = '';
 
             data.forEach(item => {
                 const wornVal = parseFormattedNumber(item.wornLast.replace('%', ''));
                 const statusUpper = item.status.toUpperCase();
-
-                if (wornVal >= 80 || statusUpper.includes('CRITICAL') || statusUpper.includes('KRITIS')) {
-                    alarmHTML += `
-                        <tr>
-                            <td>${item.site}</td>
-                            <td><strong>${item.noUnit}</strong></td>
-                            <td>${item.model}</td>
-                            <td>${item.dateLast}</td>
-                            <td>${item.hmLast}</td>
-                            <td style="color: var(--accent-red); font-weight: bold;">${item.wornLast}</td>
-                            <td><span class="badge-worn critical"><i class="fa-solid fa-triangle-exclamation"></i> Immediate Inspection</span></td>
-                        </tr>
-                    `;
-                }
 
                 if (wornVal >= 60 || statusUpper.includes('WORN') || statusUpper.includes('WASPADA') || statusUpper.includes('CRITICAL') || statusUpper.includes('KRITIS')) {
                     const isCritical = wornVal >= 80 || statusUpper.includes('CRITICAL') || statusUpper.includes('KRITIS');
@@ -860,7 +801,6 @@
                 }
             });
 
-            document.getElementById('tableAlarmBody').innerHTML = alarmHTML || '<tr><td colspan="7" style="text-align:center; color: var(--accent-green);">Tidak ada unit berstatus Kritis (Worn > 80%)</td></tr>';
             document.getElementById('tableReplaceBody').innerHTML = replaceHTML || '<tr><td colspan="6" style="text-align:center;">Belum ada rekomendasi penggantian</td></tr>';
         }
 
