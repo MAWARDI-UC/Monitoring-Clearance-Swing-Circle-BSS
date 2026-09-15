@@ -213,7 +213,7 @@
         .badge-worn.normal { background: var(--accent-green-bg); color: var(--accent-green); }
         .badge-worn.warning { background: var(--accent-yellow-bg); color: var(--accent-yellow); }
         .badge-worn.critical { background: var(--accent-red-bg); color: var(--accent-red); }
-        .badge-worn.urgent { background: #581c87; color: #e9d5ff; border: 1px solid #a855f7; }
+        .badge-worn.urgent { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
 
         .kat-circle {
             width: 26px; height: 26px; border-radius: 50%; background: #1e293b;
@@ -221,8 +221,63 @@
             align-items: center; justify-content: center; border: 1px solid var(--border-color);
         }
 
+        /* LAYOUT TAB 3 (BANNER & MATRIX SIDE-BY-SIDE) */
+        .replace-top-container {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            align-items: stretch;
+        }
+
+        .replace-top-container .banner {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .matrix-legend-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 16px;
+            width: 380px;
+            flex-shrink: 0;
+        }
+
+        .matrix-legend-card h4 {
+            font-size: 12px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10.5px;
+        }
+
+        .matrix-table th, .matrix-table td {
+            padding: 4px 6px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .matrix-table th {
+            background: #182232;
+            color: var(--text-muted);
+            font-size: 10px;
+        }
+
+        .matrix-table td.p-low { color: #38bdf8; font-weight: 700; }
+        .matrix-table td.p-med { color: #facc15; font-weight: 700; }
+        .matrix-table td.p-high { color: #fb923c; font-weight: 700; }
+        .matrix-table td.p-urg { color: #c084fc; font-weight: 700; }
+
         @media (max-width: 1024px) {
             .filter-grid, .metrics-grid, .charts-grid { grid-template-columns: 1fr 1fr; }
+            .replace-top-container { flex-direction: column; }
+            .matrix-legend-card { width: 100%; }
         }
         @media (max-width: 640px) {
             .app-container { padding: 16px; }
@@ -259,7 +314,7 @@
             <button class="tab-btn" onclick="switchTab('tab-replace', this)"><i class="fa-solid fa-wrench"></i> Rekomendasi Replace</button>
         </div>
 
-        <!-- ================= TAB 1: SWING CLEARANCE (UTAMA) ================= -->
+        <!-- ================= TAB 1: SWING CLEARANCE ================= -->
         <div id="tab-clearance" class="tab-content active">
             <div class="banner">
                 <div class="badge-status"><div class="dot"></div> PLANT &bull; Monitoring Swing Circle Active</div>
@@ -369,12 +424,51 @@
             </div>
         </div>
 
-        <!-- ================= TAB 3: REKOMENDASI REPLACE (MATRIKS 3x3) ================= -->
+        <!-- ================= TAB 3: REKOMENDASI REPLACE ================= -->
         <div id="tab-replace" class="tab-content">
-            <div class="banner">
-                <div class="badge-status"><div class="dot"></div> PLANT &bull; Component Replacement Plan</div>
-                <h2>REKOMENDASI REPLACEMENT (MATRIKS WORN vs POLICY)</h2>
-                <p>PENJADWALAN DAN REKOMENDASI PENGGANTIAN BERDASARKAN KATEGORI MATRIKS 1 - 9</p>
+            
+            <div class="replace-top-container">
+                <div class="banner">
+                    <div class="badge-status"><div class="dot"></div> PLANT &bull; Component Replacement Plan</div>
+                    <h2>REKOMENDASI REPLACEMENT (MATRIKS WORN vs POLICY)</h2>
+                    <p>PENJADWALAN DAN REKOMENDASI PENGGANTIAN BERDASARKAN KATEGORI MATRIKS 1 - 9</p>
+                </div>
+
+                <div class="matrix-legend-card">
+                    <h4>Rekomendasi Matriks Prioritas & Remark</h4>
+                    <table class="matrix-table">
+                        <thead>
+                            <tr>
+                                <th>Kategori</th>
+                                <th>Kombinasi (Worn + Policy)</th>
+                                <th>Prioritas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>Normal + Aman</td><td class="p-low">LOW</td></tr>
+                            <tr><td>2</td><td>Normal + Mendekati Policy</td><td class="p-low">LOW</td></tr>
+                            <tr><td>3</td><td>Normal + Tercapai</td><td class="p-med">MEDIUM</td></tr>
+                            <tr><td>4</td><td>Waspada + Aman</td><td class="p-med">MEDIUM</td></tr>
+                            <tr><td>5</td><td>Waspada + Mendekati Policy</td><td class="p-med">MEDIUM</td></tr>
+                            <tr><td>6</td><td>Waspada + Tercapai</td><td class="p-high">HIGH</td></tr>
+                            <tr><td>7</td><td>Kritis + Aman</td><td class="p-high">HIGH</td></tr>
+                            <tr><td>8</td><td>Kritis + Mendekati Policy</td><td class="p-high">HIGH</td></tr>
+                            <tr><td>9</td><td>Kritis + Tercapai</td><td class="p-urg">URGENT</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="filter-panel">
+                <div class="filter-header">
+                    <div class="filter-title"><i class="fa-solid fa-filter"></i> Filter Unit & Site Review Lifetime</div>
+                    <button class="reset-btn" id="resetFilterBtn3"><i class="fa-solid fa-rotate-left"></i> Reset Filter</button>
+                </div>
+                <div class="filter-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="filter-group"><label>SITE</label><select id="filterSite3"><option value="">Semua Site</option></select></div>
+                    <div class="filter-group"><label>MODEL</label><select id="filterModel3"><option value="">Semua Model</option></select></div>
+                    <div class="filter-group"><label>PRIORITAS</label><select id="filterPrioritas3"><option value="">Semua Prioritas</option></select></div>
+                </div>
             </div>
 
             <div class="table-card">
@@ -393,7 +487,7 @@
                         </tr>
                     </thead>
                     <tbody id="tableReplaceBody">
-                        <tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 24px;">Belum ada data rekomendasi</td></tr>
+                        <tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 24px;">Memuat data...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -486,9 +580,22 @@
             document.getElementById('filterSite2').innerHTML = '<option value="">Semua Site</option>' + sites2.map(s => `<option value="${s}">${s}</option>`).join('');
             document.getElementById('filterModel2').innerHTML = '<option value="">Semua Model</option>' + models2.map(m => `<option value="${m}">${m}</option>`).join('');
             document.getElementById('filterStatus2').innerHTML = '<option value="">Semua Status</option>' + statuses2.map(st => `<option value="${st}">${st}</option>`).join('');
+
+            const sites3 = [...new Set(rawDataClearance.map(d => d.site).filter(Boolean))];
+            const models3 = [...new Set(rawDataClearance.map(d => d.model).filter(Boolean))];
+
+            document.getElementById('filterSite3').innerHTML = '<option value="">Semua Site</option>' + sites3.map(s => `<option value="${s}">${s}</option>`).join('');
+            document.getElementById('filterModel3').innerHTML = '<option value="">Semua Model</option>' + models3.map(m => `<option value="${m}">${m}</option>`).join('');
+            document.getElementById('filterPrioritas3').innerHTML = `
+                <option value="">Semua Prioritas</option>
+                <option value="URGENT">URGENT</option>
+                <option value="HIGH">HIGH</option>
+                <option value="MEDIUM">MEDIUM</option>
+                <option value="LOW">LOW</option>
+            `;
         }
 
-        // ================= TAB 1 =================
+        // ================= TAB 1 LOGIC =================
         function applyFiltersTab1() {
             const s = document.getElementById('filterSite1').value.toLowerCase();
             const m = document.getElementById('filterModel1').value.toLowerCase();
@@ -605,7 +712,7 @@
             });
         }
 
-        // ================= TAB 2 =================
+        // ================= TAB 2 LOGIC =================
         function applyFiltersTab2() {
             const s = document.getElementById('filterSite2').value.toLowerCase();
             const m = document.getElementById('filterModel2').value.toLowerCase();
@@ -727,7 +834,7 @@
             });
         }
 
-        // ================= LOGIKA MATRIKS 3x3 TAB 3 =================
+        // ================= TAB 3 LOGIC (MATRIKS 3x3) =================
         function getCategoryAndRemark(wornStatus, policyStatus) {
             let wornScore = 0;   // Normal = 0, Waspada = 3, Kritis = 6
             let policyScore = 0; // Aman = 1, Mendekati Policy = 2, Tercapai = 3
@@ -747,7 +854,7 @@
 
             const matrixConfig = {
                 1: { priority: 'LOW', badge: 'normal', remark: 'Kondisi prima. Inspeksi rutin sesuai schedule.' },
-                2: { priority: 'LOW', badge: 'normal', remark: 'Kondisi fisik aman. Prepare pemesanan part (indent).' },
+                2: { priority: 'LOW', badge: 'normal', remark: 'Kondisi fisik aman. Prepare pemesanan part.' },
                 3: { priority: 'MEDIUM', badge: 'warning', remark: 'Policy tercapai. Perpendek interval inspeksi fisik.' },
                 4: { priority: 'MEDIUM', badge: 'warning', remark: 'Keausan dini terdeteksi. Evaluasi sistem greasing.' },
                 5: { priority: 'MEDIUM', badge: 'warning', remark: 'Siapkan komponen & jadwal replacement PM berikutnya.' },
@@ -760,27 +867,32 @@
             return { category: category, ...(matrixConfig[category] || { priority: 'LOW', badge: 'normal', remark: '-' }) };
         }
 
-        // RENDER TAB 3 (REKOMENDASI REPLACE BASED ON MATRIKS)
         function renderTab3Replace() {
-            let replaceHTML = '';
+            const s = document.getElementById('filterSite3').value.toLowerCase();
+            const m = document.getElementById('filterModel3').value.toLowerCase();
+            const p = document.getElementById('filterPrioritas3').value.toLowerCase();
 
-            // Map data lifetime berdasarkan No Unit untuk kemudahan lookup
             const lifetimeMap = {};
             rawDataLifetime.forEach(item => {
                 if (item.noUnit) lifetimeMap[item.noUnit.toUpperCase()] = item;
             });
 
-            // Urutkan data berdasarkan prioritas Kategori tertinggi (Kategori 9 ke 1)
-            const combinedData = rawDataClearance.map(cItem => {
+            let combinedData = rawDataClearance.map(cItem => {
                 const lItem = lifetimeMap[cItem.noUnit.toUpperCase()] || {};
                 const res = getCategoryAndRemark(cItem.status, lItem.status);
-                return {
-                    clearance: cItem,
-                    lifetime: lItem,
-                    matrix: res
-                };
-            }).sort((a, b) => b.matrix.category - a.matrix.category);
+                return { clearance: cItem, lifetime: lItem, matrix: res };
+            });
 
+            combinedData = combinedData.filter(item => {
+                const matchSite = !s || item.clearance.site.toLowerCase() === s;
+                const matchModel = !m || item.clearance.model.toLowerCase() === m;
+                const matchPriority = !p || item.matrix.priority.toLowerCase() === p;
+                return matchSite && matchModel && matchPriority;
+            });
+
+            combinedData.sort((a, b) => b.matrix.category - a.matrix.category);
+
+            let replaceHTML = '';
             combinedData.forEach(item => {
                 const c = item.clearance;
                 const l = item.lifetime;
@@ -791,8 +903,8 @@
                         <td>${c.site}</td>
                         <td><strong>${c.noUnit}</strong></td>
                         <td>${c.model}</td>
-                        <td>${c.wornLast} <small style="color:var(--text-muted);">(${c.status})</small></td>
-                        <td>${l.lifetime ? formatNumberId(parseFormattedNumber(l.lifetime)) + ' HM' : '-'} <small style="color:var(--text-muted);">(${l.status || 'N/A'})</small></td>
+                        <td><strong>${c.wornLast}</strong> <small style="color:var(--text-muted);">(${c.status})</small></td>
+                        <td><strong>${l.lifetime ? formatNumberId(parseFormattedNumber(l.lifetime)) + ' HM' : '-'}</strong> <small style="color:var(--text-muted);">(${l.status || 'N/A'})</small></td>
                         <td style="text-align: center;"><span class="kat-circle">${m.category}</span></td>
                         <td><span class="badge-worn ${m.badge}">${m.priority}</span></td>
                         <td>${m.remark}</td>
@@ -800,7 +912,7 @@
                 `;
             });
 
-            document.getElementById('tableReplaceBody').innerHTML = replaceHTML || '<tr><td colspan="8" style="text-align:center;">Belum ada data rekomendasi</td></tr>';
+            document.getElementById('tableReplaceBody').innerHTML = replaceHTML || '<tr><td colspan="8" style="text-align:center;">Data tidak ditemukan</td></tr>';
         }
 
         // EVENT LISTENERS TAB 1
@@ -823,6 +935,17 @@
             document.getElementById('filterModel2').value = '';
             document.getElementById('filterStatus2').value = '';
             applyFiltersTab2();
+        });
+
+        // EVENT LISTENERS TAB 3
+        document.getElementById('filterSite3').addEventListener('change', renderTab3Replace);
+        document.getElementById('filterModel3').addEventListener('change', renderTab3Replace);
+        document.getElementById('filterPrioritas3').addEventListener('change', renderTab3Replace);
+        document.getElementById('resetFilterBtn3').addEventListener('click', () => {
+            document.getElementById('filterSite3').value = '';
+            document.getElementById('filterModel3').value = '';
+            document.getElementById('filterPrioritas3').value = '';
+            renderTab3Replace();
         });
 
         document.addEventListener('DOMContentLoaded', fetchGoogleSheets);
