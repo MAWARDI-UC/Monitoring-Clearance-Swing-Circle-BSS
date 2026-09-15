@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BSS MONITORING - Clearance Swing Circle</title>
+    <title>BSS MONITORING - Clearance & Lifetime Swing Circle</title>
     <!-- Font & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -167,9 +167,10 @@
             font-size: 11px; color: var(--text-muted); text-transform: uppercase;
             font-weight: 700; margin-bottom: 8px;
         }
-        .metric-info .value { font-size: 26px; font-weight: 800; margin-bottom: 4px; }
+        .metric-info .value { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
         .metric-info .value.yellow { color: var(--accent-yellow); }
         .metric-info .value.red { color: var(--accent-red); }
+        .metric-info .value.green { color: var(--accent-green); }
         .metric-info p { font-size: 11px; color: var(--text-muted); }
 
         .metric-icon {
@@ -231,7 +232,7 @@
                 <div class="brand-icon"><i class="fa-solid fa-arrows-spin"></i></div>
                 <div class="brand-text">
                     <h1>MONITORING CLEARANCE SWING CIRCLE</h1>
-                    <p>Pengukuran Clearance Swing Circle (BSS)</p>
+                    <p>Pengukuran & Lifetime Swing Circle (BSS)</p>
                 </div>
             </div>
 
@@ -254,155 +255,127 @@
 
         <!-- ================= TAB 1: SWING CLEARANCE (UTAMA) ================= -->
         <div id="tab-clearance" class="tab-content active">
-            <!-- BANNER -->
             <div class="banner">
-                <div class="badge-status">
-                    <div class="dot"></div>
-                    PLANT &bull; Monitoring Swing Circle Active
-                </div>
+                <div class="badge-status"><div class="dot"></div> PLANT &bull; Monitoring Swing Circle Active</div>
                 <h2>MONITORING CLEARANCE SWING CIRCLE</h2>
                 <p>MONITORING KEHAUSAN DAN CLEARANCE SWING CIRCLE</p>
             </div>
 
-            <!-- FILTER PANEL -->
+            <!-- FILTER PANEL TAB 1 -->
             <div class="filter-panel">
                 <div class="filter-header">
-                    <div class="filter-title">
-                        <i class="fa-solid fa-filter"></i> Filter Unit & Site Monitoring Clearance
-                    </div>
-                    <button class="reset-btn" id="resetFilterBtn">
-                        <i class="fa-solid fa-rotate-left"></i> Reset Filter
-                    </button>
+                    <div class="filter-title"><i class="fa-solid fa-filter"></i> Filter Unit & Site Monitoring Clearance</div>
+                    <button class="reset-btn" id="resetFilterBtn1"><i class="fa-solid fa-rotate-left"></i> Reset Filter</button>
                 </div>
                 <div class="filter-grid">
-                    <div class="filter-group">
-                        <label>SITE</label>
-                        <select id="filterSite">
-                            <option value="">Semua Site</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>MODEL</label>
-                        <select id="filterModel">
-                            <option value="">Semua Model</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>STATUS WORN</label>
-                        <select id="filterStatus">
-                            <option value="">Semua Status</option>
-                        </select>
-                    </div>
+                    <div class="filter-group"><label>SITE</label><select id="filterSite1"><option value="">Semua Site</option></select></div>
+                    <div class="filter-group"><label>MODEL</label><select id="filterModel1"><option value="">Semua Model</option></select></div>
+                    <div class="filter-group"><label>STATUS WORN</label><select id="filterStatus1"><option value="">Semua Status</option></select></div>
                 </div>
             </div>
 
-            <!-- METRIC CARDS -->
+            <!-- METRIC CARDS TAB 1 -->
             <div class="metrics-grid">
                 <div class="metric-card">
-                    <div class="metric-info">
-                        <h4>TOTAL UNIT MONITORED</h4>
-                        <div class="value" id="totalUnits">0 Unit</div>
-                        <p>Dalam monitoring Clearance</p>
-                    </div>
+                    <div class="metric-info"><h4>TOTAL UNIT MONITORED</h4><div class="value" id="totalUnits">0 Unit</div><p>Dalam monitoring Clearance</p></div>
                     <div class="metric-icon blue"><i class="fa-solid fa-truck-monster"></i></div>
                 </div>
-
                 <div class="metric-card">
-                    <div class="metric-info">
-                        <h4>Waspada ( > 60% s/d < 80% )</h4>
-                        <div class="value yellow" id="worn80">0 Unit</div>
-                        <p class="yellow">Perlu Pengawasan Ketat</p>
-                    </div>
+                    <div class="metric-info"><h4>Waspada ( > 60% s/d < 80% )</h4><div class="value yellow" id="worn80">0 Unit</div><p class="yellow">Perlu Pengawasan Ketat</p></div>
                     <div class="metric-icon yellow"><i class="fa-solid fa-triangle-exclamation"></i></div>
                 </div>
-
                 <div class="metric-card">
-                    <div class="metric-info">
-                        <h4>KRITIS (80% UP WORN)</h4>
-                        <div class="value red" id="criticalWorn">0 Unit</div>
-                        <p class="red">Perlu Schedule Replace</p>
-                    </div>
+                    <div class="metric-info"><h4>KRITIS (80% UP WORN)</h4><div class="value red" id="criticalWorn">0 Unit</div><p class="red">Perlu Schedule Replace</p></div>
                     <div class="metric-icon red"><i class="fa-solid fa-circle-radiation"></i></div>
                 </div>
-
                 <div class="metric-card">
-                    <div class="metric-info">
-                        <h4>NORMAL ( under 60% )</h4>
-                        <div class="value" id="normalClearance">0 Unit</div>
-                        <p>Kondisi Aman</p>
-                    </div>
+                    <div class="metric-info"><h4>NORMAL ( under 60% )</h4><div class="value green" id="normalClearance">0 Unit</div><p>Kondisi Aman</p></div>
                     <div class="metric-icon green"><i class="fa-solid fa-circle-check"></i></div>
                 </div>
             </div>
 
-            <!-- CHARTS -->
+            <!-- CHARTS TAB 1 -->
             <div class="charts-grid">
-                <div class="chart-card">
-                    <h3>Distribusi Status Condition Swing Circle Per Site</h3>
-                    <div class="chart-container">
-                        <canvas id="avgChart"></canvas>
-                    </div>
-                </div>
-                <div class="chart-card">
-                    <h3>Total Unit Critical Worn Masing-masing Site</h3>
-                    <div class="chart-container">
-                        <canvas id="criticalChart"></canvas>
-                    </div>
-                </div>
+                <div class="chart-card"><h3>Distribusi Status Condition Swing Circle Per Site</h3><div class="chart-container"><canvas id="avgChart"></canvas></div></div>
+                <div class="chart-card"><h3>Total Unit Critical Worn Masing-masing Site</h3><div class="chart-container"><canvas id="criticalChart"></canvas></div></div>
             </div>
 
-            <!-- TABLE -->
+            <!-- TABLE TAB 1 -->
             <div class="table-card">
                 <h3>Data Monitoring Clearance Swing Circle</h3>
                 <table>
                     <thead>
-                        <tr>
-                            <th>SITE</th>
-                            <th>NO UNIT</th>
-                            <th>MODEL</th>
-                            <th>DATE LAST</th>
-                            <th>HM LAST</th>
-                            <th>WORN LAST</th>
-                            <th>STATUS</th>
-                        </tr>
+                        <tr><th>SITE</th><th>NO UNIT</th><th>MODEL</th><th>DATE LAST</th><th>HM LAST</th><th>WORN LAST</th><th>STATUS</th></tr>
                     </thead>
-                    <tbody id="tableBody">
-                        <tr>
-                            <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 24px;">Memuat data...</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="tableBody"><tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 24px;">Memuat data...</td></tr></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- ================= TAB 2: REVIEW LIFETIME ================= -->
+        <!-- ================= TAB 2: REVIEW LIFETIME (DENGAN STRUKTUR KOLOM BARU) ================= -->
         <div id="tab-lifetime" class="tab-content">
             <div class="banner">
-                <div class="badge-status">
-                    <div class="dot"></div>
-                    PLANT &bull; Review Lifetime Component
-                </div>
+                <div class="badge-status"><div class="dot"></div> PLANT &bull; Review Lifetime Component</div>
                 <h2>REVIEW LIFETIME SWING CIRCLE</h2>
-                <p>RINGKASAN ESTIMASI UMUR PAKAI DAN AKUMULASI HOUR METER (HM)</p>
+                <p>RINGKASAN ESTIMASI UMUR PAKAI, POLICY, DEVIASI &amp; AKUMULASI HOUR METER (HM)</p>
             </div>
 
+            <!-- FILTER PANEL TAB 2 -->
+            <div class="filter-panel">
+                <div class="filter-header">
+                    <div class="filter-title"><i class="fa-solid fa-filter"></i> Filter Unit & Site Review Lifetime</div>
+                    <button class="reset-btn" id="resetFilterBtn2"><i class="fa-solid fa-rotate-left"></i> Reset Filter</button>
+                </div>
+                <div class="filter-grid">
+                    <div class="filter-group"><label>SITE</label><select id="filterSite2"><option value="">Semua Site</option></select></div>
+                    <div class="filter-group"><label>MODEL</label><select id="filterModel2"><option value="">Semua Model</option></select></div>
+                    <div class="filter-group"><label>STATUS LIFETIME</label><select id="filterStatus2"><option value="">Semua Status</option></select></div>
+                </div>
+            </div>
+
+            <!-- METRIC CARDS TAB 2 -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-info"><h4>TOTAL UNIT LIFETIME</h4><div class="value" id="ltTotalUnits">0 Unit</div><p>Unit terdata lifetime</p></div>
+                    <div class="metric-icon blue"><i class="fa-solid fa-clock"></i></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-info"><h4>RATA-RATA LIFETIME</h4><div class="value yellow" id="ltAvgLifetime">0 HM</div><p>Jam kerja rata-rata</p></div>
+                    <div class="metric-icon yellow"><i class="fa-solid fa-calculator"></i></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-info"><h4>MAX LIFETIME UNIT</h4><div class="value red" id="ltMaxLifetime">0 HM</div><p id="ltMaxUnitName">Unit: -</p></div>
+                    <div class="metric-icon red"><i class="fa-solid fa-gauge-high"></i></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-info"><h4>UNIT OVER POLICY / DEVIASI</h4><div class="value green" id="ltOverPolicyCount">0 Unit</div><p>Melebihi target policy</p></div>
+                    <div class="metric-icon green"><i class="fa-solid fa-chart-line"></i></div>
+                </div>
+            </div>
+
+            <!-- CHARTS TAB 2 -->
+            <div class="charts-grid">
+                <div class="chart-card"><h3>Top 10 Unit Lifetime (HM) Tertinggi</h3><div class="chart-container"><canvas id="topLifetimeChart"></canvas></div></div>
+                <div class="chart-card"><h3>Rata-rata Lifetime (HM) Per Site</h3><div class="chart-container"><canvas id="siteAvgLifetimeChart"></canvas></div></div>
+            </div>
+
+            <!-- TABLE TAB 2 -->
             <div class="table-card">
-                <h3>Histori & Statisik Hour Meter Unit</h3>
+                <h3>Histori &amp; Analisis Lifetime Unit (Kolom B, I, J, L, M, N, O)</h3>
                 <table>
                     <thead>
                         <tr>
-                            <th>SITE</th>
-                            <th>NO UNIT</th>
-                            <th>MODEL</th>
-                            <th>DATE LAST</th>
-                            <th>HM OPERATIONAL</th>
-                            <th>STATUS PAKAI</th>
+                            <th>SITE (B)</th>
+                            <th>NO UNIT (I)</th>
+                            <th>MODEL (J)</th>
+                            <th>LIFETIME / HM (L)</th>
+                            <th>POLICY (M)</th>
+                            <th>DEVIASI (N)</th>
+                            <th>STATUS (O)</th>
                         </tr>
                     </thead>
                     <tbody id="tableLifetimeBody">
-                        <tr>
-                            <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">Memuat data...</td>
-                        </tr>
+                        <tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 24px;">Memuat data...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -411,33 +384,17 @@
         <!-- ================= TAB 3: ALARM WORN > 80% ================= -->
         <div id="tab-alarm" class="tab-content">
             <div class="banner" style="border-color: rgba(239, 68, 68, 0.4);">
-                <div class="badge-status" style="background: var(--accent-red-bg); color: var(--accent-red);">
-                    <div class="dot" style="background: var(--accent-red);"></div>
-                    ALERT &bull; Unit Priority Warning
-                </div>
+                <div class="badge-status" style="background: var(--accent-red-bg); color: var(--accent-red);"><div class="dot" style="background: var(--accent-red);"></div> ALERT &bull; Unit Priority Warning</div>
                 <h2>ALARM KEHAUSAN (WORN &ge; 80%)</h2>
                 <p>DAFTAR UNIT DALAM KONDISI KRITIS &amp; MEMERLUKAN PENGAWASAN KETAT</p>
             </div>
-
             <div class="table-card">
                 <h3 style="color: var(--accent-red);"><i class="fa-solid fa-triangle-exclamation"></i> Daftar Alert Kehausan Kritis</h3>
                 <table>
                     <thead>
-                        <tr>
-                            <th>SITE</th>
-                            <th>NO UNIT</th>
-                            <th>MODEL</th>
-                            <th>DATE LAST</th>
-                            <th>HM LAST</th>
-                            <th>WORN LAST</th>
-                            <th>ACTION NEEDED</th>
-                        </tr>
+                        <tr><th>SITE</th><th>NO UNIT</th><th>MODEL</th><th>DATE LAST</th><th>HM LAST</th><th>WORN LAST</th><th>ACTION NEEDED</th></tr>
                     </thead>
-                    <tbody id="tableAlarmBody">
-                        <tr>
-                            <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 24px;">Memuat data...</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="tableAlarmBody"><tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 24px;">Memuat data...</td></tr></tbody>
                 </table>
             </div>
         </div>
@@ -445,32 +402,17 @@
         <!-- ================= TAB 4: REKOMENDASI REPLACE ================= -->
         <div id="tab-replace" class="tab-content">
             <div class="banner">
-                <div class="badge-status">
-                    <div class="dot"></div>
-                    PLANT &bull; Component Replacement Plan
-                </div>
+                <div class="badge-status"><div class="dot"></div> PLANT &bull; Component Replacement Plan</div>
                 <h2>REKOMENDASI REPLACEMENT</h2>
                 <p>PENJADWALAN DAN REKOMENDASI PENGGANTIAN SWING CIRCLE</p>
             </div>
-
             <div class="table-card">
                 <h3>Schedule Replacement Unit</h3>
                 <table>
                     <thead>
-                        <tr>
-                            <th>SITE</th>
-                            <th>NO UNIT</th>
-                            <th>MODEL</th>
-                            <th>WORN (%)</th>
-                            <th>PRIORITAS</th>
-                            <th>REKOMENDASI KEPUTUSAN</th>
-                        </tr>
+                        <tr><th>SITE</th><th>NO UNIT</th><th>MODEL</th><th>WORN (%)</th><th>PRIORITAS</th><th>REKOMENDASI KEPUTUSAN</th></tr>
                     </thead>
-                    <tbody id="tableReplaceBody">
-                        <tr>
-                            <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">Memuat data...</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="tableReplaceBody"><tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">Memuat data...</td></tr></tbody>
                 </table>
             </div>
         </div>
@@ -478,24 +420,25 @@
     </div>
 
     <script>
-        // Registrasi Plugin DataLabels ke Chart.js
         Chart.register(ChartDataLabels);
 
         const SHEET_ID = '1it3gY8UgzNIOptRJ4aNtyRegZq1Uq6-KWF93Etmn9Io';
         const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
 
-        let rawData = [];
+        let rawDataClearance = [];
+        let rawDataLifetime = [];
+
+        // Instances Chart Tab 1
         let avgChartInstance = null;
         let criticalChartInstance = null;
 
-        // FUNGSI GANTI TAB
+        // Instances Chart Tab 2
+        let topLifetimeChartInstance = null;
+        let siteAvgLifetimeChartInstance = null;
+
         function switchTab(tabId, btnElement) {
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => content.classList.remove('active'));
-
-            const buttons = document.querySelectorAll('.tab-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btnElement.classList.add('active');
         }
@@ -508,7 +451,8 @@
                     const rows = results.data;
                     if (!rows || rows.length <= 1) return;
 
-                    rawData = rows.slice(1).map(row => ({
+                    // Data Tab 1 (Clearance)
+                    rawDataClearance = rows.slice(1).map(row => ({
                         site: row[1] ? row[1].trim() : '',
                         noUnit: row[2] ? row[2].trim() : '',
                         model: row[3] ? row[3].trim() : '',
@@ -518,63 +462,70 @@
                         status: row[7] ? row[7].trim() : 'NORMAL'
                     })).filter(item => item.noUnit !== '' || item.site !== '');
 
+                    // Data Tab 2 (Lifetime) - Mengacu pada Kolom B, I, J, L, M, N, O
+                    rawDataLifetime = rows.slice(1).map(row => ({
+                        site: row[1] ? row[1].trim() : '',        // Kolom B (Indeks 1)
+                        noUnit: row[8] ? row[8].trim() : '',      // Kolom I (Indeks 8)
+                        model: row[9] ? row[9].trim() : '',       // Kolom J (Indeks 9)
+                        lifetime: row[11] ? row[11].trim() : '0', // Kolom L (Indeks 11)
+                        policy: row[12] ? row[12].trim() : '0',   // Kolom M (Indeks 12)
+                        deviasi: row[13] ? row[13].trim() : '0',  // Kolom N (Indeks 13)
+                        status: row[14] ? row[14].trim() : ''     // Kolom O (Indeks 14)
+                    })).filter(item => item.noUnit !== '' || item.site !== '');
+
                     populateFilterOptions();
-                    applyFiltersAndRender();
+                    applyFiltersTab1();
+                    applyFiltersTab2();
+                    renderOtherTabs(rawDataClearance);
                 }
             });
         }
 
         function populateFilterOptions() {
-            const sites = [...new Set(rawData.map(d => d.site).filter(Boolean))];
-            const models = [...new Set(rawData.map(d => d.model).filter(Boolean))];
-            const statuses = [...new Set(rawData.map(d => d.status).filter(Boolean))];
+            // Options Tab 1
+            const sites1 = [...new Set(rawDataClearance.map(d => d.site).filter(Boolean))];
+            const models1 = [...new Set(rawDataClearance.map(d => d.model).filter(Boolean))];
+            const statuses1 = [...new Set(rawDataClearance.map(d => d.status).filter(Boolean))];
 
-            const filterSite = document.getElementById('filterSite');
-            const filterModel = document.getElementById('filterModel');
-            const filterStatus = document.getElementById('filterStatus');
+            document.getElementById('filterSite1').innerHTML = '<option value="">Semua Site</option>' + sites1.map(s => `<option value="${s}">${s}</option>`).join('');
+            document.getElementById('filterModel1').innerHTML = '<option value="">Semua Model</option>' + models1.map(m => `<option value="${m}">${m}</option>`).join('');
+            document.getElementById('filterStatus1').innerHTML = '<option value="">Semua Status</option>' + statuses1.map(st => `<option value="${st}">${st}</option>`).join('');
 
-            filterSite.innerHTML = '<option value="">Semua Site</option>';
-            filterModel.innerHTML = '<option value="">Semua Model</option>';
-            filterStatus.innerHTML = '<option value="">Semua Status</option>';
+            // Options Tab 2
+            const sites2 = [...new Set(rawDataLifetime.map(d => d.site).filter(Boolean))];
+            const models2 = [...new Set(rawDataLifetime.map(d => d.model).filter(Boolean))];
+            const statuses2 = [...new Set(rawDataLifetime.map(d => d.status).filter(Boolean))];
 
-            sites.forEach(s => filterSite.innerHTML += `<option value="${s}">${s}</option>`);
-            models.forEach(m => filterModel.innerHTML += `<option value="${m}">${m}</option>`);
-            statuses.forEach(st => filterStatus.innerHTML += `<option value="${st}">${st}</option>`);
+            document.getElementById('filterSite2').innerHTML = '<option value="">Semua Site</option>' + sites2.map(s => `<option value="${s}">${s}</option>`).join('');
+            document.getElementById('filterModel2').innerHTML = '<option value="">Semua Model</option>' + models2.map(m => `<option value="${m}">${m}</option>`).join('');
+            document.getElementById('filterStatus2').innerHTML = '<option value="">Semua Status</option>' + statuses2.map(st => `<option value="${st}">${st}</option>`).join('');
         }
 
-        function applyFiltersAndRender() {
-            const selectedSite = document.getElementById('filterSite').value.toLowerCase();
-            const selectedModel = document.getElementById('filterModel').value.toLowerCase();
-            const selectedStatus = document.getElementById('filterStatus').value.toLowerCase();
+        // ================= FILTER & RENDER TAB 1 =================
+        function applyFiltersTab1() {
+            const s = document.getElementById('filterSite1').value.toLowerCase();
+            const m = document.getElementById('filterModel1').value.toLowerCase();
+            const st = document.getElementById('filterStatus1').value.toLowerCase();
 
-            const filtered = rawData.filter(item => {
-                const matchSite = !selectedSite || item.site.toLowerCase() === selectedSite;
-                const matchModel = !selectedModel || item.model.toLowerCase() === selectedModel;
-                const matchStatus = !selectedStatus || item.status.toLowerCase() === selectedStatus;
-                return matchSite && matchModel && matchStatus;
+            const filtered = rawDataClearance.filter(item => {
+                return (!s || item.site.toLowerCase() === s) &&
+                       (!m || item.model.toLowerCase() === m) &&
+                       (!st || item.status.toLowerCase() === st);
             });
 
-            renderDashboard(filtered);
-            renderOtherTabs(rawData); // Render Tab 2, 3, & 4
+            renderDashboardTab1(filtered);
         }
 
-        function renderDashboard(data) {
-            let totalUnits = data.length;
-            let countWorn80 = 0;
-            let countCritical = 0;
-            let countNormal = 0;
-
-            const siteStatusMap = {};
-            const siteCriticalMap = {};
+        function renderDashboardTab1(data) {
+            let totalUnits = data.length, countWorn80 = 0, countCritical = 0, countNormal = 0;
+            const siteStatusMap = {}, siteCriticalMap = {};
             let tableHTML = '';
 
             data.forEach(item => {
                 const wornVal = parseFloat(item.wornLast.replace('%', '')) || 0;
                 const statusUpper = item.status.toUpperCase();
 
-                if (item.site && !siteStatusMap[item.site]) {
-                    siteStatusMap[item.site] = { normal: 0, waspada: 0, kritis: 0 };
-                }
+                if (item.site && !siteStatusMap[item.site]) siteStatusMap[item.site] = { normal: 0, waspada: 0, kritis: 0 };
 
                 if (wornVal >= 80 || statusUpper.includes('CRITICAL') || statusUpper.includes('KRITIS')) {
                     countCritical++;
@@ -584,14 +535,10 @@
                     }
                 } else if (wornVal >= 60 || statusUpper.includes('WORN') || statusUpper.includes('WASPADA')) {
                     countWorn80++;
-                    if (item.site) {
-                        siteStatusMap[item.site].waspada += 1;
-                    }
+                    if (item.site) siteStatusMap[item.site].waspada += 1;
                 } else {
                     countNormal++;
-                    if (item.site) {
-                        siteStatusMap[item.site].normal += 1;
-                    }
+                    if (item.site) siteStatusMap[item.site].normal += 1;
                 }
 
                 let badgeClass = 'normal';
@@ -615,35 +562,208 @@
             document.getElementById('worn80').innerText = countWorn80 + ' Unit';
             document.getElementById('criticalWorn').innerText = countCritical + ' Unit';
             document.getElementById('normalClearance').innerText = countNormal + ' Unit';
-
             document.getElementById('tableBody').innerHTML = tableHTML || '<tr><td colspan="7" style="text-align:center;">Data tidak ditemukan</td></tr>';
 
-            renderCharts(siteStatusMap, siteCriticalMap);
+            renderChartsTab1(siteStatusMap, siteCriticalMap);
         }
 
-        // RENDER KONTEN DASHBOARD TAB 2, 3, & 4
+        function renderChartsTab1(siteStatusMap, siteCriticalMap) {
+            const sites = Object.keys(siteStatusMap);
+            const normalData = sites.map(s => siteStatusMap[s].normal);
+            const waspadaData = sites.map(s => siteStatusMap[s].waspada);
+            const kritisData = sites.map(s => siteStatusMap[s].kritis);
+            const criticalData = sites.map(s => siteCriticalMap[s] || 0);
+
+            const ctxAvg = document.getElementById('avgChart').getContext('2d');
+            if (avgChartInstance) avgChartInstance.destroy();
+            avgChartInstance = new Chart(ctxAvg, {
+                type: 'bar',
+                data: {
+                    labels: sites.length ? sites : ['No Data'],
+                    datasets: [
+                        { label: 'Aman / Normal', data: sites.length ? normalData : [0], backgroundColor: '#10b981' },
+                        { label: 'Waspada', data: sites.length ? waspadaData : [0], backgroundColor: '#f59e0b' },
+                        { label: 'Kritis', data: sites.length ? kritisData : [0], backgroundColor: '#ef4444' }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true, position: 'top', labels: { color: '#f8fafc', font: { size: 11 } } },
+                        datalabels: { anchor: 'end', align: 'start', color: '#fff', font: { weight: 'bold', size: 11 }, formatter: v => v > 0 ? v : '' }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                        y: { beginAtZero: true, ticks: { color: '#94a3b8', precision: 0 }, grid: { color: '#1e293b' } }
+                    }
+                }
+            });
+
+            const ctxCritical = document.getElementById('criticalChart').getContext('2d');
+            if (criticalChartInstance) criticalChartInstance.destroy();
+            criticalChartInstance = new Chart(ctxCritical, {
+                type: 'bar',
+                data: {
+                    labels: sites.length ? sites : ['No Data'],
+                    datasets: [{ label: 'Critical Unit', data: criticalData.length ? criticalData : [0], backgroundColor: '#ef4444' }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: { anchor: 'end', align: 'start', color: '#fff', font: { weight: 'bold', size: 11 }, formatter: v => v > 0 ? v : '' }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                        y: { beginAtZero: true, ticks: { color: '#94a3b8', precision: 0 }, grid: { color: '#1e293b' } }
+                    }
+                }
+            });
+        }
+
+        // ================= FILTER & RENDER TAB 2 (REVIEW LIFETIME) =================
+        function applyFiltersTab2() {
+            const s = document.getElementById('filterSite2').value.toLowerCase();
+            const m = document.getElementById('filterModel2').value.toLowerCase();
+            const st = document.getElementById('filterStatus2').value.toLowerCase();
+
+            const filtered = rawDataLifetime.filter(item => {
+                return (!s || item.site.toLowerCase() === s) &&
+                       (!m || item.model.toLowerCase() === m) &&
+                       (!st || item.status.toLowerCase() === st);
+            });
+
+            renderDashboardTab2(filtered);
+        }
+
+        function renderDashboardTab2(data) {
+            let totalUnits = data.length;
+            let sumLifetime = 0;
+            let maxLt = 0;
+            let maxUnit = '-';
+            let overPolicyCount = 0;
+            let siteLifetimeMap = {};
+
+            let tableHTML = '';
+
+            data.forEach(item => {
+                // Formatting angka
+                const ltVal = parseFloat(item.lifetime.replace(/,/g, '')) || 0;
+                const policyVal = parseFloat(item.policy.replace(/,/g, '')) || 0;
+                const deviasiVal = parseFloat(item.deviasi.replace(/,/g, '')) || 0;
+
+                sumLifetime += ltVal;
+
+                if (ltVal > maxLt) {
+                    maxLt = ltVal;
+                    maxUnit = item.noUnit;
+                }
+
+                if (deviasiVal > 0 || (policyVal > 0 && ltVal > policyVal)) {
+                    overPolicyCount++;
+                }
+
+                // Pengelompokan site untuk grafik
+                if (item.site) {
+                    if (!siteLifetimeMap[item.site]) siteLifetimeMap[item.site] = { total: 0, count: 0 };
+                    siteLifetimeMap[item.site].total += ltVal;
+                    siteLifetimeMap[item.site].count += 1;
+                }
+
+                // Styling badge status
+                let badgeClass = 'normal';
+                const stUpper = item.status.toUpperCase();
+                if (stUpper.includes('OVER') || stUpper.includes('HIGH') || deviasiVal > 0) badgeClass = 'critical';
+                else if (stUpper.includes('WARNING') || stUpper.includes('NEAR')) badgeClass = 'warning';
+
+                tableHTML += `
+                    <tr>
+                        <td>${item.site}</td>
+                        <td><strong>${item.noUnit}</strong></td>
+                        <td>${item.model}</td>
+                        <td><strong>${ltVal.toLocaleString()} HM</strong></td>
+                        <td>${policyVal ? policyVal.toLocaleString() + ' HM' : '-'}</td>
+                        <td style="${deviasiVal > 0 ? 'color: var(--accent-red); font-weight: bold;' : ''}">${deviasiVal ? deviasiVal.toLocaleString() + ' HM' : '0'}</td>
+                        <td><span class="badge-worn ${badgeClass}">${item.status || 'NORMAL'}</span></td>
+                    </tr>
+                `;
+            });
+
+            const avgLt = totalUnits > 0 ? Math.round(sumLifetime / totalUnits) : 0;
+
+            document.getElementById('ltTotalUnits').innerText = totalUnits + ' Unit';
+            document.getElementById('ltAvgLifetime').innerText = avgLt.toLocaleString() + ' HM';
+            document.getElementById('ltMaxLifetime').innerText = maxLt.toLocaleString() + ' HM';
+            document.getElementById('ltMaxUnitName').innerText = 'Unit: ' + maxUnit;
+            document.getElementById('ltOverPolicyCount').innerText = overPolicyCount + ' Unit';
+
+            document.getElementById('tableLifetimeBody').innerHTML = tableHTML || '<tr><td colspan="7" style="text-align:center;">Data tidak ditemukan</td></tr>';
+
+            renderChartsTab2(data, siteLifetimeMap);
+        }
+
+        function renderChartsTab2(data, siteLifetimeMap) {
+            // Chart 1: Top 10 Lifetime Unit
+            const top10 = [...data].sort((a, b) => (parseFloat(b.lifetime.replace(/,/g, '')) || 0) - (parseFloat(a.lifetime.replace(/,/g, '')) || 0)).slice(0, 10);
+            const topLabels = top10.map(d => d.noUnit);
+            const topValues = top10.map(d => parseFloat(d.lifetime.replace(/,/g, '')) || 0);
+
+            const ctxTop = document.getElementById('topLifetimeChart').getContext('2d');
+            if (topLifetimeChartInstance) topLifetimeChartInstance.destroy();
+            topLifetimeChartInstance = new Chart(ctxTop, {
+                type: 'bar',
+                data: {
+                    labels: topLabels.length ? topLabels : ['No Data'],
+                    datasets: [{ label: 'Lifetime (HM)', data: topValues.length ? topValues : [0], backgroundColor: '#3b82f6' }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: { anchor: 'end', align: 'end', color: '#fff', font: { weight: 'bold', size: 10 }, formatter: v => v > 0 ? v.toLocaleString() : '' }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+                    }
+                }
+            });
+
+            // Chart 2: Rata-rata Lifetime per Site
+            const sites = Object.keys(siteLifetimeMap);
+            const siteAvgValues = sites.map(s => Math.round(siteLifetimeMap[s].total / siteLifetimeMap[s].count));
+
+            const ctxSiteAvg = document.getElementById('siteAvgLifetimeChart').getContext('2d');
+            if (siteAvgLifetimeChartInstance) siteAvgLifetimeChartInstance.destroy();
+            siteAvgLifetimeChartInstance = new Chart(ctxSiteAvg, {
+                type: 'bar',
+                data: {
+                    labels: sites.length ? sites : ['No Data'],
+                    datasets: [{ label: 'Rata-rata HM', data: siteAvgValues.length ? siteAvgValues : [0], backgroundColor: '#f59e0b' }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        datalabels: { anchor: 'end', align: 'start', color: '#fff', font: { weight: 'bold', size: 11 }, formatter: v => v > 0 ? v.toLocaleString() : '' }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                        y: { beginAtZero: true, ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+                    }
+                }
+            });
+        }
+
+        // RENDER TAB 3 & 4
         function renderOtherTabs(data) {
-            let lifetimeHTML = '';
-            let alarmHTML = '';
-            let replaceHTML = '';
+            let alarmHTML = '', replaceHTML = '';
 
             data.forEach(item => {
                 const wornVal = parseFloat(item.wornLast.replace('%', '')) || 0;
                 const statusUpper = item.status.toUpperCase();
 
-                // Tab 2: Lifetime Content
-                lifetimeHTML += `
-                    <tr>
-                        <td>${item.site}</td>
-                        <td><strong>${item.noUnit}</strong></td>
-                        <td>${item.model}</td>
-                        <td>${item.dateLast}</td>
-                        <td>${item.hmLast} HM</td>
-                        <td><span class="badge-worn normal">Active</span></td>
-                    </tr>
-                `;
-
-                // Tab 3: Alarm Worn > 80% Filter Content
                 if (wornVal >= 80 || statusUpper.includes('CRITICAL') || statusUpper.includes('KRITIS')) {
                     alarmHTML += `
                         <tr>
@@ -658,7 +778,6 @@
                     `;
                 }
 
-                // Tab 4: Rekomendasi Replace (Kritis & Waspada)
                 if (wornVal >= 60 || statusUpper.includes('WORN') || statusUpper.includes('WASPADA') || statusUpper.includes('CRITICAL') || statusUpper.includes('KRITIS')) {
                     const isCritical = wornVal >= 80 || statusUpper.includes('CRITICAL') || statusUpper.includes('KRITIS');
                     replaceHTML += `
@@ -674,126 +793,30 @@
                 }
             });
 
-            document.getElementById('tableLifetimeBody').innerHTML = lifetimeHTML || '<tr><td colspan="6" style="text-align:center;">Data tidak ada</td></tr>';
             document.getElementById('tableAlarmBody').innerHTML = alarmHTML || '<tr><td colspan="7" style="text-align:center; color: var(--accent-green);">Tidak ada unit berstatus Kritis (Worn > 80%)</td></tr>';
             document.getElementById('tableReplaceBody').innerHTML = replaceHTML || '<tr><td colspan="6" style="text-align:center;">Belum ada rekomendasi penggantian</td></tr>';
         }
 
-        function renderCharts(siteStatusMap, siteCriticalMap) {
-            const sites = Object.keys(siteStatusMap);
-            
-            const normalData = sites.map(s => siteStatusMap[s].normal);
-            const waspadaData = sites.map(s => siteStatusMap[s].waspada);
-            const kritisData = sites.map(s => siteStatusMap[s].kritis);
+        // EVENT LISTENERS TAB 1
+        document.getElementById('filterSite1').addEventListener('change', applyFiltersTab1);
+        document.getElementById('filterModel1').addEventListener('change', applyFiltersTab1);
+        document.getElementById('filterStatus1').addEventListener('change', applyFiltersTab1);
+        document.getElementById('resetFilterBtn1').addEventListener('click', () => {
+            document.getElementById('filterSite1').value = '';
+            document.getElementById('filterModel1').value = '';
+            document.getElementById('filterStatus1').value = '';
+            applyFiltersTab1();
+        });
 
-            const criticalData = sites.map(s => siteCriticalMap[s] || 0);
-
-            // Chart 1: Grouped Bar Chart Status Per Site
-            const ctxAvg = document.getElementById('avgChart').getContext('2d');
-            if (avgChartInstance) avgChartInstance.destroy();
-            avgChartInstance = new Chart(ctxAvg, {
-                type: 'bar',
-                data: {
-                    labels: sites.length ? sites : ['No Data'],
-                    datasets: [
-                        {
-                            label: 'Aman / Normal',
-                            data: sites.length ? normalData : [0],
-                            backgroundColor: '#10b981'
-                        },
-                        {
-                            label: 'Waspada',
-                            data: sites.length ? waspadaData : [0],
-                            backgroundColor: '#f59e0b'
-                        },
-                        {
-                            label: 'Kritis',
-                            data: sites.length ? kritisData : [0],
-                            backgroundColor: '#ef4444'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: { color: '#f8fafc', font: { size: 11 } }
-                        },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'start',
-                            color: '#ffffff',
-                            font: {
-                                weight: 'bold',
-                                size: 11
-                            },
-                            formatter: function(value) {
-                                return value > 0 ? value : '';
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            ticks: { color: '#94a3b8' },
-                            grid: { color: '#1e293b' }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            ticks: { color: '#94a3b8', precision: 0 },
-                            grid: { color: '#1e293b' }
-                        }
-                    }
-                }
-            });
-
-            // Chart 2: Critical Units Per Site
-            const ctxCritical = document.getElementById('criticalChart').getContext('2d');
-            if (criticalChartInstance) criticalChartInstance.destroy();
-            criticalChartInstance = new Chart(ctxCritical, {
-                type: 'bar',
-                data: {
-                    labels: sites.length ? sites : ['No Data'],
-                    datasets: [{ label: 'Critical Unit', data: criticalData.length ? criticalData : [0], backgroundColor: '#ef4444' }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { 
-                        legend: { display: false },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'start',
-                            color: '#ffffff',
-                            font: {
-                                weight: 'bold',
-                                size: 11
-                            },
-                            formatter: function(value) {
-                                return value > 0 ? value : '';
-                            }
-                        }
-                    },
-                    scales: {
-                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
-                        y: { beginAtZero: true, ticks: { color: '#94a3b8', precision: 0 }, grid: { color: '#1e293b' } }
-                    }
-                }
-            });
-        }
-
-        // Event Listeners
-        document.getElementById('filterSite').addEventListener('change', applyFiltersAndRender);
-        document.getElementById('filterModel').addEventListener('change', applyFiltersAndRender);
-        document.getElementById('filterStatus').addEventListener('change', applyFiltersAndRender);
-        
-        document.getElementById('resetFilterBtn').addEventListener('click', () => {
-            document.getElementById('filterSite').value = '';
-            document.getElementById('filterModel').value = '';
-            document.getElementById('filterStatus').value = '';
-            applyFiltersAndRender();
+        // EVENT LISTENERS TAB 2
+        document.getElementById('filterSite2').addEventListener('change', applyFiltersTab2);
+        document.getElementById('filterModel2').addEventListener('change', applyFiltersTab2);
+        document.getElementById('filterStatus2').addEventListener('change', applyFiltersTab2);
+        document.getElementById('resetFilterBtn2').addEventListener('click', () => {
+            document.getElementById('filterSite2').value = '';
+            document.getElementById('filterModel2').value = '';
+            document.getElementById('filterStatus2').value = '';
+            applyFiltersTab2();
         });
 
         document.addEventListener('DOMContentLoaded', fetchGoogleSheets);
