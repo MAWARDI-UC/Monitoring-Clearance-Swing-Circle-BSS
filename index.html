@@ -312,7 +312,7 @@
             </div>
         </div>
 
-        <!-- ================= TAB 2: REVIEW LIFETIME (DENGAN STRUKTUR KOLOM BARU) ================= -->
+        <!-- ================= TAB 2: REVIEW LIFETIME ================= -->
         <div id="tab-lifetime" class="tab-content">
             <div class="banner">
                 <div class="badge-status"><div class="dot"></div> PLANT &bull; Review Lifetime Component</div>
@@ -412,7 +412,7 @@
                     <thead>
                         <tr><th>SITE</th><th>NO UNIT</th><th>MODEL</th><th>WORN (%)</th><th>PRIORITAS</th><th>REKOMENDASI KEPUTUSAN</th></tr>
                     </thead>
-                    <tbody id="tableReplaceBody"><tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">Memuat data...</td></tr></tbody>
+                    <tbody id="tableReplaceBody"><tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">Belum ada rekomendasi penggantian</td></tr></tbody>
                 </table>
             </div>
         </div>
@@ -435,6 +435,27 @@
         // Instances Chart Tab 2
         let topLifetimeChartInstance = null;
         let siteAvgLifetimeChartInstance = null;
+
+        // HELPER PERBAIKAN ANGKAS DESIMAL INDONESIA (E.g., "27034,2" -> 27034.2)
+        function parseFormattedNumber(val) {
+            if (val === null || val === undefined || val === '') return 0;
+            if (typeof val === 'number') return val;
+            
+            let str = String(val).trim();
+            str = str.replace(/\./g, '');  // Hapus titik ribuan
+            str = str.replace(',', '.');   // Ubah koma desimal menjadi titik
+            
+            const num = parseFloat(str);
+            return isNaN(num) ? 0 : num;
+        }
+
+        // HELPER FORMAT ANGKA DENGAN DESIMAL KE TAMPILAN INDONESIA
+        function formatNumberId(val) {
+            return new Intl.NumberFormat('id-ID', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
+            }).format(val);
+        }
 
         function switchTab(tabId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -522,7 +543,7 @@
             let tableHTML = '';
 
             data.forEach(item => {
-                const wornVal = parseFloat(item.wornLast.replace('%', '')) || 0;
+                const wornVal = parseFormattedNumber(item.wornLast.replace('%', ''));
                 const statusUpper = item.status.toUpperCase();
 
                 if (item.site && !siteStatusMap[item.site]) siteStatusMap[item.site] = { normal: 0, waspada: 0, kritis: 0 };
@@ -647,10 +668,10 @@
             let tableHTML = '';
 
             data.forEach(item => {
-                // Formatting angka
-                const ltVal = parseFloat(item.lifetime.replace(/,/g, '')) || 0;
-                const policyVal = parseFloat(item.policy.replace(/,/g, '')) || 0;
-                const deviasiVal = parseFloat(item.deviasi.replace(/,/g, '')) || 0;
+                // Parsing angka desimal dengan benar
+                const ltVal = parseFormattedNumber(item.lifetime);
+                const policyVal = parseFormattedNumber(item.policy);
+                const deviasiVal = parseFormattedNumber(item.deviasi);
 
                 sumLifetime += ltVal;
 
@@ -681,9 +702,9 @@
                         <td>${item.site}</td>
                         <td><strong>${item.noUnit}</strong></td>
                         <td>${item.model}</td>
-                        <td><strong>${ltVal.toLocaleString()} HM</strong></td>
-                        <td>${policyVal ? policyVal.toLocaleString() + ' HM' : '-'}</td>
-                        <td style="${deviasiVal > 0 ? 'color: var(--accent-red); font-weight: bold;' : ''}">${deviasiVal ? deviasiVal.toLocaleString() + ' HM' : '0'}</td>
+                        <td><strong>${formatNumberId(ltVal)} HM</strong></td>
+                        <td>${policyVal ? formatNumberId(policyVal) + ' HM' : '-'}</td>
+                        <td style="${deviasiVal > 0 ? 'color: var(--accent-red); font-weight: bold;' : ''}">${deviasiVal ? formatNumberId(deviasiVal) + ' HM' : '0'}</td>
                         <td><span class="badge-worn ${badgeClass}">${item.status || 'NORMAL'}</span></td>
                     </tr>
                 `;
@@ -692,8 +713,8 @@
             const avgLt = totalUnits > 0 ? Math.round(sumLifetime / totalUnits) : 0;
 
             document.getElementById('ltTotalUnits').innerText = totalUnits + ' Unit';
-            document.getElementById('ltAvgLifetime').innerText = avgLt.toLocaleString() + ' HM';
-            document.getElementById('ltMaxLifetime').innerText = maxLt.toLocaleString() + ' HM';
+            document.getElementById('ltAvgLifetime').innerText = formatNumberId(avgLt) + ' HM';
+            document.getElementById('ltMaxLifetime').innerText = formatNumberId(maxLt) + ' HM';
             document.getElementById('ltMaxUnitName').innerText = 'Unit: ' + maxUnit;
             document.getElementById('ltOverPolicyCount').innerText = overPolicyCount + ' Unit';
 
@@ -704,9 +725,9 @@
 
         function renderChartsTab2(data, siteLifetimeMap) {
             // Chart 1: Top 10 Lifetime Unit
-            const top10 = [...data].sort((a, b) => (parseFloat(b.lifetime.replace(/,/g, '')) || 0) - (parseFloat(a.lifetime.replace(/,/g, '')) || 0)).slice(0, 10);
+            const top10 = [...data].sort((a, b) => parseFormattedNumber(b.lifetime) - parseFormattedNumber(a.lifetime)).slice(0, 10);
             const topLabels = top10.map(d => d.noUnit);
-            const topValues = top10.map(d => parseFloat(d.lifetime.replace(/,/g, '')) || 0);
+            const topValues = top10.map(d => parseFormattedNumber(d.lifetime));
 
             const ctxTop = document.getElementById('topLifetimeChart').getContext('2d');
             if (topLifetimeChartInstance) topLifetimeChartInstance.destroy();
@@ -721,7 +742,7 @@
                     responsive: true, maintainAspectRatio: false,
                     plugins: {
                         legend: { display: false },
-                        datalabels: { anchor: 'end', align: 'end', color: '#fff', font: { weight: 'bold', size: 10 }, formatter: v => v > 0 ? v.toLocaleString() : '' }
+                        datalabels: { anchor: 'end', align: 'end', color: '#fff', font: { weight: 'bold', size: 10 }, formatter: v => v > 0 ? formatNumberId(v) : '' }
                     },
                     scales: {
                         x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
@@ -746,7 +767,7 @@
                     responsive: true, maintainAspectRatio: false,
                     plugins: {
                         legend: { display: false },
-                        datalabels: { anchor: 'end', align: 'start', color: '#fff', font: { weight: 'bold', size: 11 }, formatter: v => v > 0 ? v.toLocaleString() : '' }
+                        datalabels: { anchor: 'end', align: 'start', color: '#fff', font: { weight: 'bold', size: 11 }, formatter: v => v > 0 ? formatNumberId(v) : '' }
                     },
                     scales: {
                         x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
@@ -761,7 +782,7 @@
             let alarmHTML = '', replaceHTML = '';
 
             data.forEach(item => {
-                const wornVal = parseFloat(item.wornLast.replace('%', '')) || 0;
+                const wornVal = parseFormattedNumber(item.wornLast.replace('%', ''));
                 const statusUpper = item.status.toUpperCase();
 
                 if (wornVal >= 80 || statusUpper.includes('CRITICAL') || statusUpper.includes('KRITIS')) {
